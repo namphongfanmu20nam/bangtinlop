@@ -1,0 +1,2736 @@
+
+
+Nhat ky chương 3 · HTML
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌸 Kỷ Niệm Cấp 3 — Nhật Ký Cảm Xúc & Ký Ức</title>
+<style>
+  /* ==========================================
+     HỆ THỐNG BIẾN TOÀN CỤC & CHỦ ĐỀ (THEMES)
+     ========================================== */
+  :root {
+    /* Mặc định: Vở học sinh cổ điển (Notebook Classic) */
+    --bg: #f5efe6;
+    --paper: #fffdf9;
+    --accent: #5c84b6;
+    --accent-dark: #3f608a;
+    --accent-light: #e6f0fa;
+    --ink: #2b3a4a;
+    --muted: #7c8793;
+    --line: #e3dec3;
+    --sticker-pink: rgba(244, 143, 177, 0.4);
+    --sticker-yellow: rgba(255, 235, 156, 0.6);
+    --tape-shadow: rgba(0, 0, 0, 0.05);
+    --font-heading: "Segoe UI", Arial, sans-serif;
+    --font-body: "Segoe UI", Arial, sans-serif;
+    --shadow: 0 8px 24px rgba(43, 58, 74, 0.06);
+    --radius: 16px;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+ 
+  /* Chủ đề: Hoa anh đào thơ mộng (Sakura Dream) */
+  body.theme-sakura {
+    --bg: #fdedf1;
+    --paper: #fffcfd;
+    --accent: #f48fb1;
+    --accent-dark: #d81b60;
+    --accent-light: #fce4ec;
+    --ink: #491a27;
+    --muted: #a37b84;
+    --line: #f8bbd0;
+    --sticker-pink: rgba(255, 182, 193, 0.5);
+    --sticker-yellow: rgba(255, 249, 196, 0.7);
+    --shadow: 0 8px 24px rgba(216, 27, 96, 0.06);
+  }
+ 
+  /* Chủ đề: Học sinh cá biệt (Cyberpunk Neon) */
+  body.theme-cyber {
+    --bg: #0b0c10;
+    --paper: #1f2833;
+    --accent: #00f0ff;
+    --accent-dark: #ff007f;
+    --accent-light: rgba(0, 240, 255, 0.15);
+    --ink: #c5c6c7;
+    --muted: #66fcf1;
+    --line: #2f3e46;
+    --sticker-pink: rgba(255, 0, 127, 0.3);
+    --sticker-yellow: rgba(0, 240, 255, 0.3);
+    --shadow: 0 8px 24px rgba(0, 240, 255, 0.15);
+  }
+ 
+  /* Chủ đề: Góc ôn thi ấm áp (Cozy Forest) */
+  body.theme-forest {
+    --bg: #1e2522;
+    --paper: #2d3b36;
+    --accent: #a3b18a;
+    --accent-dark: #dad7cd;
+    --accent-light: rgba(163, 177, 138, 0.15);
+    --ink: #f4f1de;
+    --muted: #a3b18a;
+    --line: #3f514b;
+    --sticker-pink: rgba(224, 122, 95, 0.4);
+    --sticker-yellow: rgba(244, 241, 222, 0.3);
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+ 
+  /* Chủ đề: Hoàng hôn ký ức (Golden Sunset) */
+  body.theme-sunset {
+    --bg: #fef0e3;
+    --paper: #fffaf5;
+    --accent: #e76f51;
+    --accent-dark: #f4a261;
+    --accent-light: #ffe5d9;
+    --ink: #264653;
+    --muted: #e76f51;
+    --line: #ebd3be;
+    --sticker-pink: rgba(231, 111, 81, 0.3);
+    --sticker-yellow: rgba(233, 196, 106, 0.5);
+    --shadow: 0 8px 24px rgba(231, 111, 81, 0.08);
+  }
+ 
+  /* ==========================================
+     STYLE CƠ BẢN & GIAO DIỆN CHUNG
+     ========================================== */
+  * {
+    box-sizing: border-box;
+    outline: none;
+  }
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    transition: var(--transition);
+    overflow-x: hidden;
+  }
+ 
+  /* Hiệu ứng hoa anh đào rơi */
+  #sakura-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 999;
+    display: none;
+  }
+  body.theme-sakura #sakura-canvas {
+    display: block;
+  }
+ 
+  /* Header phong cách Scrapbook */
+  header {
+    text-align: center;
+    padding: 40px 16px 20px;
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .tape-decoration {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    width: 160px;
+    height: 38px;
+    background: var(--sticker-yellow);
+    box-shadow: 0 2px 4px var(--tape-shadow);
+    opacity: 0.8;
+    z-index: 10;
+  }
+  .tape-decoration::before {
+    content: '';
+    position: absolute;
+    left: -8px; top: 0; bottom: 0; width: 16px;
+    background: radial-gradient(circle, transparent 4px, var(--bg) 4px) 100% 0/16px 16px;
+  }
+  .tape-decoration::after {
+    content: '';
+    position: absolute;
+    right: -8px; top: 0; bottom: 0; width: 16px;
+    background: radial-gradient(circle, transparent 4px, var(--bg) 4px) 0 0/16px 16px;
+  }
+ 
+  header h1 {
+    font-family: var(--font-heading);
+    margin: 10px 0 0;
+    font-size: 2.3rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    display: inline-block;
+    position: relative;
+  }
+  header h1 span {
+    color: var(--accent);
+  }
+  header p {
+    color: var(--muted);
+    margin: 8px 0 0;
+    font-size: 1.05rem;
+    font-weight: 500;
+  }
+ 
+  /* Grid Layout Container */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 16px 80px;
+    display: grid;
+    grid-template-columns: 310px 1fr;
+    gap: 30px;
+  }
+ 
+  @media (max-width: 900px) {
+    .container {
+      grid-template-columns: 1fr;
+    }
+  }
+ 
+  /* Bảng điều khiển / Sidebar */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+ 
+  /* Thẻ trang trí - Scrapbook card */
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    position: relative;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+  }
+ 
+  /* Paper Sticker trang trí */
+  .sticker-note {
+    position: absolute;
+    top: -10px;
+    right: 15px;
+    background: var(--sticker-pink);
+    color: var(--accent-dark);
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 4px 10px;
+    transform: rotate(5deg);
+    border-radius: 4px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+  }
+ 
+  /* Widgets */
+  .widget-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 2px dashed var(--line);
+    padding-bottom: 8px;
+  }
+ 
+  /* Trạm âm thanh (Procedural Soundscape) */
+  .sound-station {
+    background: var(--paper);
+  }
+  .sound-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .sound-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .sound-row span {
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sound-slider {
+    flex: 1;
+    max-width: 130px;
+    height: 6px;
+    -webkit-appearance: none;
+    background: var(--line);
+    border-radius: 3px;
+    outline: none;
+  }
+  .sound-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    transition: 0.1s;
+  }
+  .sound-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+  }
+ 
+  /* Chuỗi viết liên tục (Writing Streak Widget) */
+  .streak-box {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .streak-icon {
+    font-size: 2.5rem;
+    animation: fire-pulse 1.5s infinite alternate;
+  }
+  @keyframes fire-pulse {
+    from { transform: scale(1) rotate(-3deg); filter: drop-shadow(0 0 2px orange); }
+    to { transform: scale(1.1) rotate(3deg); filter: drop-shadow(0 0 10px red); }
+  }
+  .streak-info h4 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--accent-dark);
+  }
+  .streak-info p {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+ 
+  /* Thống kê học tập & cảm xúc */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .stat-card {
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid var(--line);
+  }
+  .stat-card .num {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent-dark);
+  }
+  .stat-card .lbl {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+ 
+  /* Cảm xúc gần đây (Mood Distribution Chart) */
+  .mood-chart-container {
+    margin-top: 10px;
+  }
+  .mood-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .mood-bar-row span {
+    font-size: 1rem;
+    width: 24px;
+    text-align: center;
+  }
+  .mood-bar-bg {
+    flex: 1;
+    height: 10px;
+    background: var(--line);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .mood-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 5px;
+    width: 0%;
+    transition: width 0.6s ease;
+  }
+  .mood-bar-val {
+    font-size: 0.8rem;
+    font-weight: bold;
+    width: 25px;
+    text-align: right;
+    color: var(--muted);
+  }
+ 
+  /* ==========================================
+     PHẦN TABS - DI CHUYỂN HOẠT HỌA
+     ========================================== */
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .tabs {
+    display: flex;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 6px;
+    gap: 6px;
+    box-shadow: var(--shadow);
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 12px 10px;
+    border-radius: calc(var(--radius) - 6px);
+    border: none;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: var(--transition);
+  }
+  .tab-btn.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  .tab-btn:hover:not(.active) {
+    background: var(--accent-light);
+  }
+ 
+  /* ==========================================
+     FORM VIẾT NHẬT KÝ (TAB: WRITE)
+     ========================================== */
+  form label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 8px;
+    margin-top: 16px;
+    font-size: 0.9rem;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  form input[type="text"],
+  form input[type="date"],
+  form select,
+  form textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    font-size: 1rem;
+    font-family: inherit;
+    background: var(--paper);
+    color: var(--ink);
+    transition: var(--transition);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+  }
+  form input:focus,
+  form select:focus,
+  form textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-light);
+  }
+ 
+  /* Ruled lines inside diary content editor */
+  form textarea {
+    min-height: 220px;
+    resize: vertical;
+    line-height: 1.8;
+  }
+  body.theme-notebook form textarea {
+    background-image: linear-gradient(rgba(0,0,0,0) 95%, var(--line) 95%);
+    background-size: 100% 1.8em;
+  }
+ 
+  .row {
+    display: flex;
+    gap: 16px;
+  }
+  .row > div {
+    flex: 1;
+  }
+ 
+  /* Custom Interactive Mood Selector */
+  .mood-picker-grid {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 6px 2px;
+    margin-bottom: 8px;
+    scrollbar-width: thin;
+  }
+  .mood-opt {
+    flex: 1;
+    min-width: 55px;
+    padding: 10px 4px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .mood-opt .emoji {
+    font-size: 1.5rem;
+    transition: transform 0.2s;
+  }
+  .mood-opt .lbl {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .mood-opt:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+  .mood-opt:hover .emoji {
+    transform: scale(1.2);
+  }
+  .mood-opt.selected {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .mood-opt.selected .lbl {
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .mood-opt.selected .emoji {
+    transform: scale(1.25);
+  }
+ 
+  /* Media Attachment System */
+  .attachment-panel {
+    margin-top: 16px;
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+  .attachment-btns {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .attach-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    font-weight: bold;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: var(--transition);
+  }
+  .attach-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+ 
+  /* Drawing Pad Canvas Container */
+  .drawing-container {
+    display: none;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 10px;
+  }
+  .drawing-canvas {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    width: 100%;
+    height: 220px;
+    touch-action: none;
+    cursor: crosshair;
+  }
+  .canvas-tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .colors {
+    display: flex;
+    gap: 4px;
+  }
+  .color-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    cursor: pointer;
+    box-shadow: 0 0 0 1px var(--line);
+    transition: transform 0.1s;
+  }
+  .color-dot.active {
+    transform: scale(1.25);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+  .canvas-actions {
+    display: flex;
+    gap: 6px;
+  }
+ 
+  /* File Uploader Style */
+  .photo-uploader-box {
+    display: none;
+    border: 2px dashed var(--accent);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    background: var(--accent-light);
+    transition: var(--transition);
+  }
+  .photo-uploader-box:hover {
+    background: rgba(0, 240, 255, 0.05);
+    transform: scale(1.01);
+  }
+  .photo-uploader-box p {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: var(--accent-dark);
+    font-weight: 500;
+  }
+ 
+  /* Previews */
+  .media-previews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .preview-item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .preview-item .remove-btn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(220, 53, 69, 0.9);
+    color: #fff;
+    border: none;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+ 
+  /* Buttons */
+  .btn {
+    margin-top: 18px;
+    padding: 12px 24px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn:hover {
+    background: var(--accent-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  }
+  .btn:active {
+    transform: translateY(1px);
+  }
+  .btn.secondary {
+    background: transparent;
+    color: var(--accent-dark);
+    border: 1px solid var(--accent);
+  }
+  .btn.secondary:hover {
+    background: var(--accent-light);
+  }
+  .btn.danger {
+    background: #e63946;
+  }
+  .btn.danger:hover {
+    background: #c92a3a;
+  }
+ 
+  /* ==========================================
+     XEM NHẬT KÝ (TAB: LIST)
+     ========================================== */
+  .filter-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-bar select, .filter-bar input {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    font-family: inherit;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .filter-bar input {
+    flex: 1;
+    min-width: 200px;
+  }
+ 
+  /* On This Day Widget inside entry list */
+  .on-this-day-banner {
+    background: linear-gradient(135deg, var(--accent-light), #fffdf0);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .on-this-day-banner::after {
+    content: "🌸";
+    position: absolute;
+    right: 15px;
+    bottom: -10px;
+    font-size: 4rem;
+    opacity: 0.15;
+    transform: rotate(20deg);
+  }
+  .on-this-day-banner h3 {
+    margin: 0;
+    color: var(--accent-dark);
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .on-this-day-banner p {
+    margin: 6px 0 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+ 
+  /* Entry Paper / Notebook styling */
+  .entry {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    position: relative;
+    transition: var(--transition);
+  }
+  .entry:hover {
+    transform: translateY(-2px);
+  }
+ 
+  /* Sticker Note Pin */
+  .entry-pin {
+    position: absolute;
+    top: -12px;
+    left: 40px;
+    width: 26px;
+    height: 26px;
+    background: #e63946;
+    border-radius: 50%;
+    opacity: 0.85;
+    box-shadow: 1px 3px 6px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+  }
+  .entry-pin::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 50%;
+    position: absolute;
+    top: 4px; left: 4px;
+  }
+ 
+  .entry-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .entry-title-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .entry-title {
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: var(--ink);
+  }
+  .entry-grade {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--accent-light);
+    color: var(--accent-dark);
+  }
+  .entry-date {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+ 
+  /* Notebook Content with soft lines */
+  .entry-content {
+    white-space: pre-wrap;
+    line-height: 1.7;
+    font-size: 1.05rem;
+    margin-bottom: 16px;
+    color: var(--ink);
+  }
+  body.theme-notebook .entry-content {
+    background-image: linear-gradient(rgba(0,0,0,0) 95%, var(--line) 95%);
+    background-size: 100% 1.7em;
+  }
+ 
+  /* Polaroid Image & Sketch Area */
+  .entry-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 16px 0;
+  }
+ 
+  /* Polaroid Frame Effect */
+  .polaroid-frame {
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    padding: 10px 10px 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: rotate(-1.5deg);
+    max-width: 200px;
+    display: inline-block;
+    transition: var(--transition);
+  }
+  .polaroid-frame:nth-child(even) {
+    transform: rotate(2deg);
+  }
+  .polaroid-frame:hover {
+    transform: scale(1.05) rotate(0deg);
+    z-index: 10;
+  }
+  .polaroid-img {
+    width: 180px;
+    height: 140px;
+    object-fit: cover;
+    border: 1px solid #f0f0f0;
+    cursor: pointer;
+  }
+  .polaroid-caption {
+    font-size: 0.75rem;
+    color: #555;
+    text-align: center;
+    font-family: var(--font-heading);
+    margin-top: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+ 
+  .entry-actions {
+    margin-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .action-btns-left {
+    display: flex;
+    gap: 8px;
+  }
+  .entry-actions button {
+    font-size: 0.85rem;
+    font-weight: bold;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .entry-actions button:hover {
+    background: var(--accent-light);
+    border-color: var(--accent);
+  }
+  .entry-actions button.delete:hover {
+    background: #fdf0f0;
+    border-color: #f5c2c2;
+    color: #dc3545;
+  }
+  .entry-actions button.star-btn {
+    border: none;
+    background: transparent;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: transform 0.2s;
+  }
+  .entry-actions button.star-btn:hover {
+    transform: scale(1.2);
+  }
+  .entry-actions button.star-btn.starred {
+    color: #ffb703;
+    filter: drop-shadow(0 0 2px rgba(255,183,3,0.5));
+  }
+ 
+  /* Empty state */
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 60px 0;
+  }
+  .empty-icon {
+    font-size: 3.5rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+ 
+  /* ==========================================
+     TAB: CÀI ĐẶT (SETTINGS) & MÃ PIN KHÓA
+     ========================================== */
+  .settings-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .settings-section {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 20px;
+  }
+  .settings-section:last-child {
+    border: none;
+  }
+  .settings-section h3 {
+    margin-top: 0;
+    font-size: 1.15rem;
+    color: var(--accent-dark);
+    margin-bottom: 12px;
+  }
+ 
+  /* Theme Button Grid */
+  .theme-selector-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+  }
+  .theme-btn {
+    padding: 12px 10px;
+    border-radius: 10px;
+    border: 2px solid var(--line);
+    background: #fff;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: var(--transition);
+    text-align: center;
+  }
+  .theme-btn.active {
+    border-color: var(--accent-dark);
+    background: var(--accent-light);
+    color: var(--accent-dark);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+ 
+  /* PIN Lock Overlay Screen */
+  .pin-lock-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--bg);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+  }
+  .pin-container {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 30px;
+    width: 100%;
+    max-width: 340px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .pin-dots {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin: 20px 0 30px;
+  }
+  .pin-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--line);
+    transition: transform 0.15s;
+  }
+  .pin-dot.filled {
+    background: var(--accent);
+    transform: scale(1.2);
+    box-shadow: 0 0 8px var(--accent);
+  }
+  .pin-pad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .pin-btn {
+    padding: 16px 0;
+    border-radius: 12px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-weight: 800;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .pin-btn:hover {
+    background: var(--accent-light);
+    border-color: var(--accent);
+  }
+  .pin-btn:active {
+    transform: scale(0.95);
+  }
+  .pin-lock-overlay.shake {
+    animation: shake-error 0.4s ease-in-out;
+  }
+  @keyframes shake-error {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+  }
+ 
+  /* Fullscreen Lightbox for attachments */
+  .lightbox {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 10010;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .lightbox-img {
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 6px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+  }
+ 
+  /* Helper Utility CSS */
+  .hidden { display: none !important; }
+ 
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    padding: 40px 16px;
+    font-weight: 500;
+    border-top: 1px dashed var(--line);
+    max-width: 900px;
+    margin: 40px auto 0;
+  }
+</style>
+</head>
+<body>
+ 
+<!-- HIỆU ỨNG ANH ĐÀO (THEME SAKURA) -->
+<canvas id="sakura-canvas"></canvas>
+ 
+<!-- MÀN HÌNH KHÓA MÃ PIN -->
+<div id="pinLockScreen" class="pin-lock-overlay hidden">
+  <div class="pin-container">
+    <div style="font-size: 2.2rem; margin-bottom: 8px;">🔐</div>
+    <h3 id="pinLockHeading" style="margin: 0; color: var(--ink);">Mã khóa bảo mật</h3>
+    <p style="color: var(--muted); font-size: 0.85rem; margin: 4px 0 15px;">Vui lòng nhập mã khóa gồm 4 chữ số</p>
+    
+    <div class="pin-dots">
+      <div class="pin-dot"></div>
+      <div class="pin-dot"></div>
+      <div class="pin-dot"></div>
+      <div class="pin-dot"></div>
+    </div>
+ 
+    <div class="pin-pad">
+      <button class="pin-btn" onclick="pressPinNum(1)">1</button>
+      <button class="pin-btn" onclick="pressPinNum(2)">2</button>
+      <button class="pin-btn" onclick="pressPinNum(3)">3</button>
+      <button class="pin-btn" onclick="pressPinNum(4)">4</button>
+      <button class="pin-btn" onclick="pressPinNum(5)">5</button>
+      <button class="pin-btn" onclick="pressPinNum(6)">6</button>
+      <button class="pin-btn" onclick="pressPinNum(7)">7</button>
+      <button class="pin-btn" onclick="pressPinNum(8)">8</button>
+      <button class="pin-btn" onclick="pressPinNum(9)">9</button>
+      <button class="pin-btn" style="font-size: 0.9rem;" onclick="clearPin()">Xóa</button>
+      <button class="pin-btn" onclick="pressPinNum(0)">0</button>
+      <button class="pin-btn" style="font-size: 0.9rem;" onclick="deleteLastPinDigit()">⌫</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- TOP DECORATION TAPE -->
+<div class="tape-decoration"></div>
+ 
+<header>
+  <h1>📔 Nhật Ký <span>3 Năm Cấp 3</span></h1>
+  <p id="greetingText">Lưu giữ từng khoảnh khắc thanh xuân tươi đẹp lớp 10, 11 và 12</p>
+</header>
+ 
+<div class="container">
+ 
+  <!-- CỘT TRÁI: SIDEBAR CHỨA CÁC WIDGET -->
+  <aside class="sidebar">
+ 
+    <!-- WIDGET 1: CHUỖI VIẾT LIÊN TỤC -->
+    <div class="card">
+      <div class="sticker-note">ĐỘNG LỰC 🔥</div>
+      <div class="streak-box">
+        <div class="streak-icon">🔥</div>
+        <div class="streak-info">
+          <h4 id="streakDays">0 Ngày</h4>
+          <p id="streakMsg">Hãy viết bài đầu tiên hôm nay!</p>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- WIDGET 2: TRẠM ÂM THANH LOFI -->
+    <div class="card sound-station">
+      <h3 class="widget-title">🎧 Trạm Âm Thanh</h3>
+      <div class="sound-controls">
+        <div class="sound-row">
+          <span>🎵 Lofi Chill</span>
+          <input type="range" class="sound-slider" id="volMusic" min="0" max="1" step="0.05" value="0">
+        </div>
+        <div class="sound-row">
+          <span>🌧️ Tiếng Mưa</span>
+          <input type="range" class="sound-slider" id="volRain" min="0" max="1" step="0.05" value="0">
+        </div>
+        <div class="sound-row">
+          <span>🔥 Bếp Lửa</span>
+          <input type="range" class="sound-slider" id="volFire" min="0" max="1" step="0.05" value="0">
+        </div>
+      </div>
+      <p style="font-size: 0.7rem; color: var(--muted); margin: 8px 0 0; text-align: center;">Nhấn tăng thanh âm lượng để hòa mình vào không gian chill</p>
+    </div>
+ 
+    <!-- WIDGET 3: THỐNG KÊ CHI TIẾT -->
+    <div class="card">
+      <h3 class="widget-title">📊 Kỷ Niệm Tổng Hợp</h3>
+      <div class="stats-grid" id="statsBar">
+        <!-- Renders dynamically -->
+      </div>
+    </div>
+ 
+    <!-- WIDGET 4: BẢN ĐỒ CẢM XÚC -->
+    <div class="card">
+      <h3 class="widget-title">📈 Nhật Ký Cảm Xúc</h3>
+      <div class="mood-chart-container" id="moodChart">
+        <!-- Renders dynamically -->
+      </div>
+    </div>
+ 
+  </aside>
+ 
+  <!-- CỘT PHẢI: NỘI DUNG CHÍNH (TABS & FORMS) -->
+  <main class="main-content">
+ 
+    <!-- THANH TABS CHUYỂN TRANG -->
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="write">✍️ Viết Nhật Ký</button>
+      <button class="tab-btn" data-tab="list">📖 Đọc Nhật Ký</button>
+      <button class="tab-btn" data-tab="board">🌐 Bảng Tin Lớp</button>
+      <button class="tab-btn" data-tab="settings">⚙️ Cài Đặt</button>
+    </nav>
+ 
+    <!-- TAP 1: VIẾT NHẬT KÝ (FORM) -->
+    <section id="tab-write" class="card">
+      <div class="sticker-note">TRANG MỚI 📝</div>
+      <form id="entryForm">
+        <input type="hidden" id="editId">
+        <div class="row">
+          <div>
+            <label for="entryDate">📅 Ngày ghi nhớ</label>
+            <input type="date" id="entryDate" required>
+          </div>
+          <div>
+            <label for="entryGrade">🏫 Học khối lớp</label>
+            <select id="entryGrade" required>
+              <option value="10">Học sinh Lớp 10</option>
+              <option value="11">Học sinh Lớp 11</option>
+              <option value="12">Học sinh Lớp 12</option>
+            </select>
+          </div>
+        </div>
+ 
+        <label for="entryTitle">✨ Tiêu đề ký ức</label>
+        <input type="text" id="entryTitle" placeholder="Ví dụ: Ngày đầu tiên nhận lớp..." required>
+ 
+        <label>💖 Cảm xúc của bạn hôm nay</label>
+        <!-- Interactive Mood Selection Grid -->
+        <div class="mood-picker-grid" id="moodPicker">
+          <div class="mood-opt selected" data-mood="😊">
+            <span class="emoji">😊</span>
+            <span class="lbl">Vui vẻ</span>
+          </div>
+          <div class="mood-opt" data-mood="😢">
+            <span class="emoji">😢</span>
+            <span class="lbl">Buồn tủi</span>
+          </div>
+          <div class="mood-opt" data-mood="😆">
+            <span class="emoji">😆</span>
+            <span class="lbl">Hào hứng</span>
+          </div>
+          <div class="mood-opt" data-mood="😴">
+            <span class="emoji">😴</span>
+            <span class="lbl">Mỏi mệt</span>
+          </div>
+          <div class="mood-opt" data-mood="😡">
+            <span class="emoji">😡</span>
+            <span class="lbl">Giận dữ</span>
+          </div>
+          <div class="mood-opt" data-mood="🥹">
+            <span class="emoji">🥹</span>
+            <span class="lbl">Cảm động</span>
+          </div>
+          <div class="mood-opt" data-mood="😌">
+            <span class="emoji">😌</span>
+            <span class="lbl">Yên bình</span>
+          </div>
+        </div>
+ 
+        <label for="entryContent">✍️ Hôm nay trường lớp có gì thú vị?</label>
+        <textarea id="entryContent" placeholder="Ghi lại bài kiểm tra đạt điểm 10, buổi chiều la cà trà sữa cùng hội bạn hay những rung động bâng khuâng..." required></textarea>
+ 
+        <!-- Đính kèm ảnh hoặc tranh vẽ vẽ tay -->
+        <div class="attachment-panel">
+          <div class="attachment-btns">
+            <button type="button" class="attach-btn" id="btnOpenUploader">📸 Chèn Hình Ảnh</button>
+            <button type="button" class="attach-btn" id="btnOpenCanvas">🎨 Vẽ Tay Minh Họa</button>
+          </div>
+ 
+          <!-- Drag and drop image input -->
+          <div id="photoDropzone" class="photo-uploader-box">
+            <span>📷 Nhấp để tải lên hoặc Kéo thả ảnh kỷ niệm tại đây</span>
+            <input type="file" id="filePhotoInput" accept="image/*" class="hidden">
+          </div>
+ 
+          <!-- Canvas drawing pad -->
+          <div id="canvasBox" class="drawing-container">
+            <canvas id="drawingCanvas" class="drawing-canvas"></canvas>
+            <div class="canvas-tools">
+              <div class="colors">
+                <div class="color-dot active" style="background: #2b3a4a;" data-color="#2b3a4a"></div>
+                <div class="color-dot" style="background: #e63946;" data-color="#e63946"></div>
+                <div class="color-dot" style="background: #5c84b6;" data-color="#5c84b6"></div>
+                <div class="color-dot" style="background: #2a9d8f;" data-color="#2a9d8f"></div>
+                <div class="color-dot" style="background: #e9c46a;" data-color="#e9c46a"></div>
+              </div>
+              <div class="canvas-actions">
+                <button type="button" class="tab-btn" id="btnClearCanvas" style="padding: 6px 10px; font-size: 0.8rem;">🧹 Xóa nét vẽ</button>
+                <button type="button" class="tab-btn active" id="btnSaveCanvas" style="padding: 6px 10px; font-size: 0.8rem;">💾 Hoàn thành nét vẽ</button>
+              </div>
+            </div>
+          </div>
+ 
+          <!-- Previews of uploaded content -->
+          <div class="media-previews" id="mediaPreviews"></div>
+        </div>
+ 
+        <!-- CHIA SẺ LÊN BẢNG TIN LỚP (TÙY CHỌN) -->
+        <div class="share-board-option" style="margin: 16px 0; padding: 12px 14px; border: 1px dashed var(--line); border-radius: 10px; display: flex; align-items: flex-start; gap: 10px;">
+          <input type="checkbox" id="shareToBoard" style="margin-top: 3px; width: 16px; height: 16px;">
+          <label for="shareToBoard" style="margin: 0; font-weight: 500; cursor: pointer;">
+            🌐 Chia sẻ bài này lên <strong>Bảng tin lớp</strong> (bất kỳ ai có link đều xem được).
+            <br><span style="color: var(--muted); font-weight: 400; font-size: 0.82rem;">Bỏ trống nếu muốn giữ riêng tư như bình thường — mặc định không chia sẻ.</span>
+          </label>
+        </div>
+ 
+        <button type="submit" class="btn" id="submitBtn">✨ Lưu lại nhật ký kỷ niệm</button>
+        <button type="button" class="btn secondary hidden" id="cancelEditBtn">Hủy chỉnh sửa</button>
+        <p id="boardShareStatus" style="font-size: 0.85rem; color: var(--muted); margin-top: 10px;"></p>
+      </form>
+    </section>
+ 
+    <!-- TAP 2: ĐỌC NHẬT KÝ & TÌM KIẾM (TAB: LIST) -->
+    <section id="tab-list" class="card hidden">
+      <div class="sticker-note">TRANG NHẬT KÝ 📖</div>
+      
+      <!-- BỘ LỌC TÌM KIẾM NÂNG CAO -->
+      <div class="filter-bar">
+        <select id="filterGrade">
+          <option value="all">Tất cả khối lớp</option>
+          <option value="10">Lớp 10</option>
+          <option value="11">Lớp 11</option>
+          <option value="12">Lớp 12</option>
+        </select>
+        <select id="filterMood">
+          <option value="all">Tất cả cảm xúc</option>
+          <option value="😊">😊 Vui vẻ</option>
+          <option value="😢">😢 Buồn tủi</option>
+          <option value="😆">😆 Hào hứng</option>
+          <option value="😴">😴 Mỏi mệt</option>
+          <option value="😡">😡 Giận dữ</option>
+          <option value="🥹">🥹 Cảm động</option>
+          <option value="😌">😌 Yên bình</option>
+        </select>
+        <select id="filterStarred">
+          <option value="all">Tất cả bài viết</option>
+          <option value="starred">⭐ Đã đánh dấu yêu thích</option>
+        </select>
+        <input type="text" id="searchBox" placeholder="Tìm theo tiêu đề hoặc nội dung kỷ niệm...">
+      </div>
+ 
+      <!-- BANNER "NGÀY NÀY NĂM XƯA" DÀNH CHO CẢM XÚC HỒI TƯỞNG -->
+      <div id="onThisDayBanner" class="on-this-day-banner hidden">
+        <h3>🕰️ Ngày này năm xưa...</h3>
+        <p id="onThisDayText"></p>
+      </div>
+ 
+      <!-- DANH SÁCH BÀI VIẾT NHẬT KÝ -->
+      <div id="entryList"></div>
+    </section>
+ 
+    <!-- TAP MỚI: BẢNG TIN LỚP (CHIA SẺ ONLINE) -->
+    <section id="tab-board" class="card hidden">
+      <div class="sticker-note">CẢ LỚP CÙNG XEM 🌐</div>
+      <p style="color: var(--muted); font-size: 0.88rem; margin-top: 0;">
+        Đây là những kỷ niệm mà mọi người trong lớp đã chọn <strong>chia sẻ công khai</strong> (tick vào ô "Chia sẻ lên Bảng tin lớp" khi viết). Bài không tick sẽ chỉ nằm ở "Đọc Nhật Ký" của riêng bạn.
+      </p>
+      <div style="display:flex; gap:10px; align-items:center; margin-bottom:16px; flex-wrap:wrap;">
+        <label style="margin:0; font-size:0.85rem; color: var(--muted);">Tên hiển thị của bạn trên bảng tin:</label>
+        <input type="text" id="boardAuthorName" placeholder="VD: Phong 12A1" style="max-width:220px; padding:6px 10px; border-radius:8px; border:1px solid var(--line);">
+        <button type="button" class="btn secondary" id="btnSaveAuthorName" style="margin:0; padding:6px 14px;">Lưu tên</button>
+      </div>
+      <p id="boardStatusMsg" style="color: var(--muted); font-size:0.85rem;"></p>
+      <div id="boardList"></div>
+    </section>
+ 
+    <!-- TAP 3: CÀI ĐẶT CHUNG (TAB: SETTINGS) -->
+    <section id="tab-settings" class="card hidden">
+      <div class="sticker-note">CẤU HÌNH ⚙️</div>
+      <div class="settings-grid">
+        
+        <!-- SECTION 1: CHỌN CHỦ ĐỀ GIAO DIỆN -->
+        <div class="settings-section">
+          <h3>🎨 Thay Đổi Giao Diện Nhật Ký</h3>
+          <p style="color: var(--muted); font-size: 0.85rem; margin-top: 0; margin-bottom: 12px;">Chọn một giao diện phù hợp nhất với tâm trạng viết lách hôm nay của bạn</p>
+          <div class="theme-selector-grid">
+            <button class="theme-btn active" data-theme="classic">📔 Ruled Notebook</button>
+            <button class="theme-btn" data-theme="sakura">🌸 Sakura Dream</button>
+            <button class="theme-btn" data-theme="cyber">⚡ Neon Cyberpunk</button>
+            <button class="theme-btn" data-theme="forest">🌲 Cozy Forest</button>
+            <button class="theme-btn" data-theme="sunset">🌅 Golden Sunset</button>
+          </div>
+        </div>
+ 
+        <!-- SECTION 2: BẢO MẬT MÃ PIN -->
+        <div class="settings-section">
+          <h3>🔐 Khóa Mật Mã Bảo Vệ (Mã PIN)</h3>
+          <p style="color: var(--muted); font-size: 0.85rem; margin-top: 0; margin-bottom: 12px;">Đảm bảo tính riêng tư cho cuốn nhật ký của bạn bằng mã khóa PIN 4 số</p>
+          <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+            <button class="btn" id="btnTogglePin" style="margin-top: 0;">Thiết lập Mã PIN</button>
+            <span id="pinStatusText" style="font-weight: 600; font-size: 0.9rem; color: var(--muted);">Trạng thái: Chưa kích hoạt bảo mật</span>
+          </div>
+        </div>
+ 
+        <!-- SECTION 3: SAO LƯU & PHỤC HỒI DỮ LIỆU -->
+        <div class="settings-section">
+          <h3>💾 Sao Lưu & Nhập Liệu Nhật Ký</h3>
+          <p style="color: var(--muted); font-size: 0.85rem; margin-top: 0; margin-bottom: 12px;">Tải dữ liệu nhật ký về máy (.json) hoặc tải file cũ lên để tiếp tục ghi chép không lo bị mất</p>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="btn secondary" id="exportBtn" style="margin-top: 0;">⬇️ Xuất dữ liệu .json</button>
+            <button class="btn secondary" id="btnTriggerImport" style="margin-top: 0;">⬆️ Nhập dữ liệu .json</button>
+            <input type="file" id="fileImportInput" accept="application/json" class="hidden">
+          </div>
+        </div>
+ 
+        <!-- SECTION 4: KHÔI PHỤC CÀI ĐẶT GỐC -->
+        <div class="settings-section" style="border-bottom: none; padding-bottom: 0;">
+          <h3 style="color: #dc3545;">🚨 Khôi Phục Cài Đặt Gốc</h3>
+          <p style="color: var(--muted); font-size: 0.85rem; margin-top: 0; margin-bottom: 12px;">Xóa sạch toàn bộ nhật ký và cấu hình trên thiết bị này. Lưu ý: Không thể hoàn tác hành động này!</p>
+          <button class="btn danger" id="btnResetAll" style="margin-top: 0;">🧹 Xóa toàn bộ dữ liệu nhật ký</button>
+        </div>
+ 
+      </div>
+    </section>
+ 
+  </main>
+ 
+</div>
+ 
+<!-- LIGHTBOX CHẾ ĐỘ XEM TOÀN MÀN HÌNH -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close">&times;</button>
+  <img id="lightboxImg" class="lightbox-img" src="" alt="Full view">
+</div>
+ 
+<footer>
+  Dữ liệu nhật ký cá nhân được lưu hoàn toàn cục bộ trên trình duyệt (localStorage).<br>
+  Riêng những bài bạn chọn "Chia sẻ lên Bảng tin lớp" sẽ được đăng công khai trên bản online cho ai có link cũng xem được.<br>
+  Hãy xuất file sao lưu định kỳ để không đánh mất những kỷ niệm thanh xuân đáng trân quý của bạn.
+</footer>
+ 
+<!-- KHO DỮ LIỆU BẢNG TIN LỚP: nhúng trực tiếp trong trang, được ghi đè mỗi khi có người "publish" bài chia sẻ mới -->
+<script type="application/json" id="boardDataStore">[]</script>
+ 
+<script>
+/* =========================================================
+   HỆ THỐNG QUẢN LÝ DỮ LIỆU NHẬT KÝ LOCALSTORAGE
+   Phát triển thêm đính kèm: photo (Base64), drawing (Base64), starred (boolean)
+   ========================================================= */
+ 
+const STORAGE_KEY = "nhatky_capba";
+const THEME_KEY = "nhatky_capba_theme";
+const PIN_KEY = "nhatky_capba_pin";
+ 
+function loadEntries(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch(e) {
+    console.error("Lỗi đọc dữ liệu nhật ký:", e);
+    return [];
+  }
+}
+ 
+function saveEntries(entries){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+}
+ 
+/* ---------- PHÁT TRIỂN CHUỖI VIẾT LIÊN TỤC (STREAK WRITING) ---------- */
+function calculateStreak() {
+  const entries = loadEntries();
+  if (entries.length === 0) return 0;
+  
+  // Trích xuất mảng các chuỗi ngày tháng độc nhất, sắp xếp giảm dần
+  const uniqueDates = [...new Set(entries.map(e => e.date))].sort((a,b) => new Date(b) - new Date(a));
+  
+  const today = todayStr();
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayStr = yesterday.toISOString().slice(0,10);
+  
+  // Nếu ngày gần nhất không phải hôm nay hoặc hôm qua, streak sẽ là 0
+  if (uniqueDates[0] !== today && uniqueDates[0] !== yesterdayStr) {
+    return 0;
+  }
+  
+  let streak = 1;
+  let currentRef = new Date(uniqueDates[0]);
+  
+  for (let i = 1; i < uniqueDates.length; i++) {
+    const prevDate = new Date(uniqueDates[i]);
+    const diffTime = Math.abs(currentRef - prevDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 1) {
+      streak++;
+      currentRef = prevDate;
+    } else if (diffDays > 1) {
+      break; // Chuỗi bị ngắt quãng
+    }
+  }
+  return streak;
+}
+ 
+function updateStreakWidget() {
+  const streak = calculateStreak();
+  const streakDaysEl = document.getElementById('streakDays');
+  const streakMsgEl = document.getElementById('streakMsg');
+  
+  if (streak > 0) {
+    streakDaysEl.textContent = `${streak} Ngày liên tục`;
+    if (streak >= 5) {
+      streakMsgEl.textContent = "Không thể cản phá! Bạn đang giữ ký ức siêu đỉnh 🔥";
+    } else if (streak >= 3) {
+      streakMsgEl.textContent = "Tuyệt vời lắm! Tiếp tục thói quen ghi nhật ký nhé ✨";
+    } else {
+      streakMsgEl.textContent = "Bạn đang đi đúng hướng rồi đó! Thêm một ngày nữa nào 🌟";
+    }
+  } else {
+    streakDaysEl.textContent = "0 Ngày";
+    streakMsgEl.textContent = "Viết nhật ký ngay hôm nay để kích hoạt chuỗi nhé! 📝";
+  }
+}
+ 
+/* ---------- DOM refs ---------- */
+const entryForm = document.getElementById('entryForm');
+const editIdInput = document.getElementById('editId');
+const entryDate = document.getElementById('entryDate');
+const entryGrade = document.getElementById('entryGrade');
+const entryTitle = document.getElementById('entryTitle');
+const entryContent = document.getElementById('entryContent');
+const submitBtn = document.getElementById('submitBtn');
+const cancelEditBtn = document.getElementById('cancelEditBtn');
+const entryListEl = document.getElementById('entryList');
+const filterGrade = document.getElementById('filterGrade');
+const filterMood = document.getElementById('filterMood');
+const filterStarred = document.getElementById('filterStarred');
+const searchBox = document.getElementById('searchBox');
+const statsBar = document.getElementById('statsBar');
+const moodChart = document.getElementById('moodChart');
+const exportBtn = document.getElementById('exportBtn');
+const fileImportInput = document.getElementById('fileImportInput');
+const btnTriggerImport = document.getElementById('btnTriggerImport');
+const btnResetAll = document.getElementById('btnResetAll');
+const greetingText = document.getElementById('greetingText');
+ 
+// Refs cho Bảng Tin Lớp (chia sẻ online)
+const shareToBoard = document.getElementById('shareToBoard');
+const boardShareStatus = document.getElementById('boardShareStatus');
+const boardList = document.getElementById('boardList');
+const boardStatusMsg = document.getElementById('boardStatusMsg');
+const boardAuthorName = document.getElementById('boardAuthorName');
+const btnSaveAuthorName = document.getElementById('btnSaveAuthorName');
+const BOARD_AUTHOR_KEY = "nhatky_capba_author";
+ 
+// Attachment Refs
+const btnOpenUploader = document.getElementById('btnOpenUploader');
+const btnOpenCanvas = document.getElementById('btnOpenCanvas');
+const photoDropzone = document.getElementById('photoDropzone');
+const filePhotoInput = document.getElementById('filePhotoInput');
+const canvasBox = document.getElementById('canvasBox');
+const drawingCanvas = document.getElementById('drawingCanvas');
+const mediaPreviews = document.getElementById('mediaPreviews');
+const btnClearCanvas = document.getElementById('btnClearCanvas');
+const btnSaveCanvas = document.getElementById('btnSaveCanvas');
+ 
+/* State biến tạm cho đính kèm */
+let tempAttachedPhoto = null;
+let tempAttachedDrawing = null;
+let activeMood = "😊";
+ 
+/* ---------- Lời chào dựa trên múi giờ ---------- */
+function setGreetingBasedOnTime() {
+  const hr = new Date().getHours();
+  let greet = "Chào bạn! Hãy cùng lưu lại kỷ niệm cấp 3 tươi đẹp nhé 🌸";
+  if (hr >= 5 && hr < 11) {
+    greet = "🌅 Chào buổi sáng tốt lành! Hôm nay trường lớp của bạn có tin gì mới không? 🌸";
+  } else if (hr >= 11 && hr < 14) {
+    greet = "🍱 Chúc bạn nghỉ trưa vui vẻ! Hôm nay buổi sáng có bài kiểm tra nào không? ✨";
+  } else if (hr >= 14 && hr < 18) {
+    greet = "🌇 Buổi chiều tràn đầy năng lượng! Giờ tan trường la cà cùng đám bạn chứ? 🥤";
+  } else if (hr >= 18 || hr < 5) {
+    greet = "🌌 Buổi tối ấm áp và yên tĩnh. Cùng lắng đọng ghi chép lại một ngày ý nghĩa nào ✍️";
+  }
+  greetingText.textContent = greet;
+}
+ 
+/* ---------- TABS NAVIGATION ---------- */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    const tab = btn.dataset.tab;
+    document.getElementById('tab-write').classList.toggle('hidden', tab !== 'write');
+    document.getElementById('tab-list').classList.toggle('hidden', tab !== 'list');
+    document.getElementById('tab-board').classList.toggle('hidden', tab !== 'board');
+    document.getElementById('tab-settings').classList.toggle('hidden', tab !== 'settings');
+    
+    if (tab === 'list') {
+      renderList();
+      checkOnThisDay();
+    }
+    if (tab === 'board') {
+      renderBoard();
+    }
+  });
+});
+ 
+/* =========================================================
+   BẢNG TIN LỚP — CHIA SẺ ONLINE (Backend API)
+   ========================================================= */
+ 
+async function getBoardData() {
+  try {
+    const response = await fetch('/api/board');
+    if (!response.ok) throw new Error('Network response was not ok');
+    return await response.json();
+  } catch (e) {
+    console.error('Error fetching board data:', e);
+    return [];
+  }
+}
+ 
+function getAuthorName() {
+  return localStorage.getItem(BOARD_AUTHOR_KEY) || "";
+}
+ 
+btnSaveAuthorName.addEventListener('click', () => {
+  const name = boardAuthorName.value.trim();
+  localStorage.setItem(BOARD_AUTHOR_KEY, name);
+  boardStatusMsg.textContent = name ? `Đã lưu tên hiển thị: ${name}` : "Đã xóa tên hiển thị.";
+});
+ 
+// Nạp lại tên hiển thị đã lưu khi vào trang
+if (boardAuthorName) boardAuthorName.value = getAuthorName();
+ 
+async function shareEntryToBoard(entryData) {
+  boardShareStatus.textContent = "⏳ Đang đăng lên bảng tin lớp...";
+  
+  const boardEntry = {
+    title: entryData.title,
+    content: entryData.content,
+    mood: entryData.mood,
+    grade: entryData.grade,
+    date: entryData.date,
+    author: getAuthorName() || "Ẩn danh"
+  };
+ 
+  try {
+    const response = await fetch('/api/board', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(boardEntry),
+    });
+ 
+    if (response.ok) {
+      boardShareStatus.textContent = "🌐 Đã chia sẻ lên Bảng tin lớp!";
+    } else {
+      boardShareStatus.textContent = "❌ Không đăng lên bảng tin được lúc này, thử lại sau nhé.";
+    }
+  } catch (err) {
+    console.error('Error sharing to board:', err);
+    boardShareStatus.textContent = "❌ Lỗi kết nối server.";
+  }
+}
+ 
+async function renderBoard() {
+  const entries = await getBoardData();
+  if (!entries.length) {
+    boardList.innerHTML = `<div class="empty"><span class="empty-icon">🌐</span>Bảng tin lớp chưa có bài viết nào được chia sẻ.</div>`;
+    return;
+  }
+  boardList.innerHTML = entries.map(en => `
+    <div class="entry">
+      <div class="entry-meta">
+        <div class="entry-title-area">
+          <span class="entry-title">${en.mood || ''} ${escapeHtml(en.title || '')}</span>
+          <span class="entry-grade">Lớp ${en.grade || '?'}</span>
+        </div>
+        <span class="entry-date">${en.date ? formatDate(en.date) : ''}</span>
+      </div>
+      <div class="entry-content">${escapeHtml(en.content || '')}</div>
+      <div style="margin-top:8px; font-size:0.8rem; color: var(--muted);">— ${escapeHtml(en.author || 'Ẩn danh')}</div>
+    </div>
+  `).join('');
+}
+ 
+/* ---------- CHỦ ĐỀ GIAO DIỆN CHUYÊN NGHIỆP ---------- */
+const themeButtons = document.querySelectorAll('.theme-btn');
+themeButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    themeButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyTheme(btn.dataset.theme);
+  });
+});
+ 
+function applyTheme(themeName) {
+  document.body.className = ''; // Xóa hết class theme cũ
+  if (themeName !== 'classic') {
+    document.body.classList.add(`theme-${themeName}`);
+  }
+  localStorage.setItem(THEME_KEY, themeName);
+}
+ 
+function loadSavedTheme() {
+  const savedTheme = localStorage.getItem(THEME_KEY) || 'classic';
+  const activeBtn = document.querySelector(`.theme-btn[data-theme="${savedTheme}"]`);
+  if (activeBtn) {
+    themeButtons.forEach(b => b.classList.remove('active'));
+    activeBtn.classList.add('active');
+  }
+  applyTheme(savedTheme);
+}
+ 
+/* ---------- INTERACTIVE MOOD SELECTOR ---------- */
+const moodOptions = document.querySelectorAll('.mood-opt');
+moodOptions.forEach(opt => {
+  opt.addEventListener('click', () => {
+    moodOptions.forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    activeMood = opt.dataset.mood;
+  });
+});
+ 
+function setMoodPicker(moodEmoji) {
+  moodOptions.forEach(o => {
+    if (o.dataset.mood === moodEmoji) {
+      o.classList.add('selected');
+      activeMood = moodEmoji;
+    } else {
+      o.classList.remove('selected');
+    }
+  });
+}
+ 
+/* ---------- PHOTO ATTACHMENT DRAG & DROP ---------- */
+btnOpenUploader.addEventListener('click', () => {
+  const isHidden = photoDropzone.style.display === 'block';
+  photoDropzone.style.display = isHidden ? 'none' : 'block';
+  canvasBox.style.display = 'none';
+});
+ 
+photoDropzone.addEventListener('click', () => filePhotoInput.click());
+ 
+photoDropzone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  photoDropzone.style.borderColor = "var(--accent-dark)";
+});
+photoDropzone.addEventListener('dragleave', () => {
+  photoDropzone.style.borderColor = "var(--accent)";
+});
+photoDropzone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  photoDropzone.style.borderColor = "var(--accent)";
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    processPhotoFile(file);
+  }
+});
+ 
+filePhotoInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) processPhotoFile(file);
+});
+ 
+function processPhotoFile(file) {
+  // Check file size, compress slightly if needed, convert to base64
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    const img = new Image();
+    img.onload = function() {
+      // Compress using canvas
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+      
+      const maxDim = 600; // Giới hạn kích thước ảnh để ko làm tràn localStorage
+      if (width > maxDim || height > maxDim) {
+        if (width > height) {
+          height = Math.round((height * maxDim) / width);
+          width = maxDim;
+        } else {
+          width = Math.round((width * maxDim) / height);
+          height = maxDim;
+        }
+      }
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      tempAttachedPhoto = canvas.toDataURL('image/jpeg', 0.7);
+      renderMediaPreviews();
+      photoDropzone.style.display = 'none';
+    };
+    img.src = evt.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+ 
+/* ---------- HANDWRITTEN CANVAS SKETCHING (BẢNG VẼ TAY) ---------- */
+let isDrawing = false;
+let lastX = 0;
+let lastY = 0;
+let brushColor = "#2b3a4a";
+const canvasCtx = drawingCanvas.getContext('2d');
+ 
+btnOpenCanvas.addEventListener('click', () => {
+  const isHidden = canvasBox.style.display === 'block';
+  canvasBox.style.display = isHidden ? 'none' : 'block';
+  photoDropzone.style.display = 'none';
+  if (!isHidden) {
+    initCanvas();
+  }
+});
+ 
+function initCanvas() {
+  // Set canvas resolution based on bounding box
+  const rect = drawingCanvas.getBoundingClientRect();
+  drawingCanvas.width = rect.width;
+  drawingCanvas.height = 220; // fixed height
+  
+  // Fill background white
+  canvasCtx.fillStyle = "#ffffff";
+  canvasCtx.fillRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+}
+ 
+// Draw Events
+drawingCanvas.addEventListener('mousedown', (e) => {
+  isDrawing = true;
+  [lastX, lastY] = getCoordinates(e);
+});
+drawingCanvas.addEventListener('mousemove', draw);
+window.addEventListener('mouseup', () => isDrawing = false);
+ 
+// Touch Support for mobile phones
+drawingCanvas.addEventListener('touchstart', (e) => {
+  isDrawing = true;
+  const t = e.touches[0];
+  const rect = drawingCanvas.getBoundingClientRect();
+  lastX = t.clientX - rect.left;
+  lastY = t.clientY - rect.top;
+});
+drawingCanvas.addEventListener('touchmove', (e) => {
+  if (!isDrawing) return;
+  e.preventDefault();
+  const t = e.touches[0];
+  const rect = drawingCanvas.getBoundingClientRect();
+  const x = t.clientX - rect.left;
+  const y = t.clientY - rect.top;
+  
+  canvasCtx.beginPath();
+  canvasCtx.moveTo(lastX, lastY);
+  canvasCtx.lineTo(x, y);
+  canvasCtx.strokeStyle = brushColor;
+  canvasCtx.lineWidth = 3;
+  canvasCtx.lineCap = 'round';
+  canvasCtx.stroke();
+  [lastX, lastY] = [x, y];
+});
+ 
+function getCoordinates(e) {
+  const rect = drawingCanvas.getBoundingClientRect();
+  return [e.clientX - rect.left, e.clientY - rect.top];
+}
+ 
+function draw(e) {
+  if (!isDrawing) return;
+  const [x, y] = getCoordinates(e);
+  
+  canvasCtx.beginPath();
+  canvasCtx.moveTo(lastX, lastY);
+  canvasCtx.lineTo(x, y);
+  canvasCtx.strokeStyle = brushColor;
+  canvasCtx.lineWidth = 3;
+  canvasCtx.lineCap = 'round';
+  canvasCtx.stroke();
+  [lastX, lastY] = [x, y];
+}
+ 
+// Brush Colors Selection
+document.querySelectorAll('.color-dot').forEach(dot => {
+  dot.addEventListener('click', () => {
+    document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+    dot.classList.add('active');
+    brushColor = dot.dataset.color;
+  });
+});
+ 
+btnClearCanvas.addEventListener('click', () => {
+  canvasCtx.fillStyle = "#ffffff";
+  canvasCtx.fillRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+});
+ 
+btnSaveCanvas.addEventListener('click', () => {
+  tempAttachedDrawing = drawingCanvas.toDataURL('image/png');
+  renderMediaPreviews();
+  canvasBox.style.display = 'none';
+});
+ 
+/* ---------- HIỂN THỊ HÌNH ẢNH MINH HỌA ĐÍNH KÈM ---------- */
+function renderMediaPreviews() {
+  mediaPreviews.innerHTML = '';
+  
+  if (tempAttachedPhoto) {
+    const div = document.createElement('div');
+    div.className = 'preview-item';
+    div.innerHTML = `
+      <img src="${tempAttachedPhoto}" alt="Photo Attachment">
+      <button type="button" class="remove-btn" onclick="removeTempAttached('photo')">&times;</button>
+    `;
+    mediaPreviews.appendChild(div);
+  }
+  
+  if (tempAttachedDrawing) {
+    const div = document.createElement('div');
+    div.className = 'preview-item';
+    div.innerHTML = `
+      <img src="${tempAttachedDrawing}" alt="Drawing Attachment">
+      <button type="button" class="remove-btn" onclick="removeTempAttached('drawing')">&times;</button>
+    `;
+    mediaPreviews.appendChild(div);
+  }
+}
+ 
+function removeTempAttached(type) {
+  if (type === 'photo') tempAttachedPhoto = null;
+  if (type === 'drawing') tempAttachedDrawing = null;
+  renderMediaPreviews();
+}
+ 
+/* ---------- LƯU TRỮ VÀ GỬI BIỂU MẪU (THÊM / SỬA) ---------- */
+entryForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const entries = loadEntries();
+ 
+  const data = {
+    date: entryDate.value,
+    grade: entryGrade.value,
+    title: entryTitle.value.trim(),
+    mood: activeMood,
+    content: entryContent.value.trim(),
+    photo: tempAttachedPhoto,
+    drawing: tempAttachedDrawing
+  };
+ 
+  const wantsShare = shareToBoard.checked;
+ 
+  if (editIdInput.value) {
+    const idx = entries.findIndex(en => en.id === editIdInput.value);
+    if (idx > -1) {
+      // Giữ nguyên trạng thái starred cũ khi sửa bài viết
+      data.starred = entries[idx].starred || false;
+      entries[idx] = { ...entries[idx], ...data };
+    }
+    resetForm();
+  } else {
+    entries.push({
+      id: Date.now() + Math.random().toString(16).slice(2),
+      starred: false,
+      ...data,
+      createdAt: new Date().toISOString()
+    });
+    entryForm.reset();
+    resetForm();
+  }
+ 
+  saveEntries(entries);
+  renderAll();
+ 
+  // Nếu người dùng chọn chia sẻ, đăng bản rút gọn (không kèm ảnh/tranh vẽ) lên Bảng tin lớp
+  if (wantsShare) {
+    await shareEntryToBoard(data);
+  }
+ 
+  // Chuyển sang Tab đọc sau khi đã lưu hoàn tất
+  document.querySelector('.tab-btn[data-tab="list"]').click();
+});
+ 
+cancelEditBtn.addEventListener('click', resetForm);
+ 
+function resetForm() {
+  entryForm.reset();
+  editIdInput.value = "";
+  entryDate.value = todayStr();
+  setMoodPicker("😊");
+  tempAttachedPhoto = null;
+  tempAttachedDrawing = null;
+  renderMediaPreviews();
+  shareToBoard.checked = false;
+  
+  submitBtn.innerHTML = "✨ Lưu lại nhật ký kỷ niệm";
+  cancelEditBtn.classList.add('hidden');
+  photoDropzone.style.display = 'none';
+  canvasBox.style.display = 'none';
+}
+ 
+function todayStr() {
+  return new Date().toISOString().slice(0, 10);
+}
+ 
+/* ---------- IN DANH SÁCH NHẬT KÝ RA MÀN HÌNH ---------- */
+function renderList() {
+  const entries = loadEntries().sort((a, b) => new Date(b.date) - new Date(a.date));
+  const gradeFilter = filterGrade.value;
+  const moodFilter = filterMood.value;
+  const starFilter = filterStarred.value;
+  const search = searchBox.value.trim().toLowerCase();
+ 
+  const filtered = entries.filter(en => {
+    const matchGrade = gradeFilter === 'all' || en.grade === gradeFilter;
+    const matchMood = moodFilter === 'all' || en.mood === moodFilter;
+    const matchStar = starFilter === 'all' || (starFilter === 'starred' && en.starred === true);
+    const matchSearch = !search ||
+      en.title.toLowerCase().includes(search) ||
+      en.content.toLowerCase().includes(search);
+    return matchGrade && matchMood && matchStar && matchSearch;
+  });
+ 
+  if (filtered.length === 0) {
+    entryListEl.innerHTML = `
+      <div class="empty">
+        <span class="empty-icon">📖</span>
+        Không tìm thấy trang nhật ký nào khớp bộ lọc.<br>Hãy thử tìm kiếm với từ khóa khác hoặc viết một trang nhật ký mới nhé!
+      </div>
+    `;
+    return;
+  }
+ 
+  entryListEl.innerHTML = filtered.map(en => {
+    const isStarred = en.starred ? 'starred' : '';
+    const starEmoji = en.starred ? '★' : '☆';
+    
+    // Xây dựng phòng trưng bày hình ảnh & tranh vẽ nếu có
+    let galleryHtml = '';
+    if (en.photo || en.drawing) {
+      galleryHtml = `<div class="entry-gallery">`;
+      if (en.photo) {
+        galleryHtml += `
+          <div class="polaroid-frame" onclick="openLightbox('${en.photo}')">
+            <img class="polaroid-img" src="${en.photo}" alt="Kỷ niệm">
+            <div class="polaroid-caption">Ảnh đính kèm 📷</div>
+          </div>
+        `;
+      }
+      if (en.drawing) {
+        galleryHtml += `
+          <div class="polaroid-frame" onclick="openLightbox('${en.drawing}')">
+            <img class="polaroid-img" src="${en.drawing}" alt="Tranh vẽ tay">
+            <div class="polaroid-caption">Nét vẽ tay 🎨</div>
+          </div>
+        `;
+      }
+      galleryHtml += `</div>`;
+    }
+ 
+    return `
+      <div class="entry" data-id="${en.id}">
+        <div class="entry-pin">📌</div>
+        <div class="entry-meta">
+          <div class="entry-title-area">
+            <span class="entry-title">${en.mood} ${escapeHtml(en.title)}</span>
+            <span class="entry-grade">Lớp ${en.grade}</span>
+          </div>
+          <span class="entry-date">${formatDate(en.date)}</span>
+        </div>
+        <div class="entry-content">${escapeHtml(en.content)}</div>
+        ${galleryHtml}
+        <div class="entry-actions">
+          <button class="star-btn ${isStarred}" data-id="${en.id}" title="Yêu thích">${starEmoji}</button>
+          <div class="action-btns-left">
+            <button class="edit">🖋️ Sửa</button>
+            <button class="delete">🗑️ Xóa</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+ 
+  // Gắn sự kiện cho các nút điều hướng trên mỗi Card
+  entryListEl.querySelectorAll('.entry').forEach(card => {
+    const id = card.dataset.id;
+    card.querySelector('.edit').addEventListener('click', () => editEntry(id));
+    card.querySelector('.delete').addEventListener('click', () => deleteEntry(id));
+    card.querySelector('.star-btn').addEventListener('click', () => toggleStar(id));
+  });
+}
+ 
+function toggleStar(id) {
+  const entries = loadEntries();
+  const idx = entries.findIndex(e => e.id === id);
+  if (idx > -1) {
+    entries[idx].starred = !entries[idx].starred;
+    saveEntries(entries);
+    renderAll();
+  }
+}
+ 
+function editEntry(id) {
+  const entries = loadEntries();
+  const en = entries.find(e => e.id === id);
+  if (!en) return;
+  
+  editIdInput.value = en.id;
+  entryDate.value = en.date;
+  entryGrade.value = en.grade;
+  entryTitle.value = en.title;
+  setMoodPicker(en.mood || "😊");
+  entryContent.value = en.content;
+  
+  tempAttachedPhoto = en.photo;
+  tempAttachedDrawing = en.drawing;
+  renderMediaPreviews();
+  
+  submitBtn.innerHTML = "✨ Cập nhật nhật ký kỷ niệm";
+  cancelEditBtn.classList.remove('hidden');
+  document.querySelector('.tab-btn[data-tab="write"]').click();
+}
+ 
+function deleteEntry(id) {
+  if (!confirm("Xóa trang nhật ký này? Kỷ niệm của bạn sẽ không thể phục hồi được đâu.")) return;
+  const entries = loadEntries().filter(e => e.id !== id);
+  saveEntries(entries);
+  renderAll();
+}
+ 
+/* ---------- HOÀN CẢNH "NGÀY NÀY NĂM XƯA" ---------- */
+function checkOnThisDay() {
+  const entries = loadEntries();
+  if (entries.length === 0) return;
+  
+  const today = new Date();
+  const tM = today.getMonth() + 1;
+  const tD = today.getDate();
+  
+  const matching = entries.filter(en => {
+    const enDate = new Date(en.date);
+    const sameDay = enDate.getDate() === tD && (enDate.getMonth() + 1) === tM;
+    const isPastYear = enDate.getFullYear() < today.getFullYear();
+    return sameDay && isPastYear;
+  });
+ 
+  const banner = document.getElementById('onThisDayBanner');
+  const text = document.getElementById('onThisDayText');
+  
+  if (matching.length > 0) {
+    const randomEntry = matching[Math.floor(Math.random() * matching.length)];
+    const yearsDiff = today.getFullYear() - new Date(randomEntry.date).getFullYear();
+    
+    text.innerHTML = `Vào đúng ngày này <strong>${yearsDiff} năm trước</strong> (năm ${new Date(randomEntry.date).getFullYear()}), bạn đã viết bài <strong>"${escapeHtml(randomEntry.title)}"</strong> với tâm trạng ${randomEntry.mood}. <br><em style="font-size: 0.85rem; color: var(--muted);">" ${escapeHtml(randomEntry.content.slice(0, 110))}... "</em> <a href="#" onclick="viewSpecificEntry('${randomEntry.id}')" style="color: var(--accent-dark); font-weight: bold; text-decoration: underline;">Đọc lại kỷ niệm</a>`;
+    banner.classList.remove('hidden');
+  } else {
+    banner.classList.add('hidden');
+  }
+}
+ 
+function viewSpecificEntry(id) {
+  const entries = loadEntries();
+  const en = entries.find(e => e.id === id);
+  if (!en) return;
+  
+  // Thiết lập các bộ lọc để chỉ hiện riêng trang này
+  searchBox.value = en.title;
+  filterGrade.value = 'all';
+  filterMood.value = 'all';
+  filterStarred.value = 'all';
+  renderList();
+}
+ 
+/* ---------- THỐNG KÊ CHI TIẾT (CHARTS) ---------- */
+function renderStats() {
+  const entries = loadEntries();
+  const counts = { 10: 0, 11: 0, 12: 0 };
+  let starredCount = 0;
+  
+  entries.forEach(en => {
+    if (counts[en.grade] !== undefined) counts[en.grade]++;
+    if (en.starred) starredCount++;
+  });
+ 
+  statsBar.innerHTML = `
+    <div class="stat-card"><div class="num">${entries.length}</div><div class="lbl">Tổng kỷ niệm</div></div>
+    <div class="stat-card"><div class="num">${starredCount}</div><div class="lbl">⭐ Yêu thích</div></div>
+    <div class="stat-card"><div class="num">${counts[10]}</div><div class="lbl">Khối lớp 10</div></div>
+    <div class="stat-card"><div class="num">${counts[11]}</div><div class="lbl">Khối lớp 11</div></div>
+    <div class="stat-card"><div class="num">${counts[12]}</div><div class="lbl">Khối lớp 12</div></div>
+  `;
+  
+  // Render Mood Distribution bar chart dynamically
+  const moods = ["😊", "😢", "😆", "😴", "😡", "🥹", "😌"];
+  const moodCounts = { "😊": 0, "😢": 0, "😆": 0, "😴": 0, "😡": 0, "🥹": 0, "😌": 0 };
+  
+  entries.forEach(en => {
+    if (moodCounts[en.mood] !== undefined) moodCounts[en.mood]++;
+  });
+ 
+  const maxVal = Math.max(...Object.values(moodCounts), 1);
+  
+  moodChart.innerHTML = moods.map(m => {
+    const count = moodCounts[m];
+    const pct = (count / maxVal) * 100;
+    return `
+      <div class="mood-bar-row">
+        <span>${m}</span>
+        <div class="mood-bar-bg">
+          <div class="mood-bar-fill" style="width: ${pct}%"></div>
+        </div>
+        <div class="mood-bar-val">${count}</div>
+      </div>
+    `;
+  }).join('');
+}
+ 
+/* ---------- BẢO MẬT MÃ PIN (PASSCODE LOCK) ---------- */
+let currentEnteredPin = "";
+let systemSetPin = localStorage.getItem(PIN_KEY) || "";
+ 
+const btnTogglePin = document.getElementById('btnTogglePin');
+const pinStatusText = document.getElementById('pinStatusText');
+const pinLockScreen = document.getElementById('pinLockScreen');
+const pinLockHeading = document.getElementById('pinLockHeading');
+ 
+function updatePinStatusUI() {
+  systemSetPin = localStorage.getItem(PIN_KEY) || "";
+  if (systemSetPin) {
+    btnTogglePin.textContent = "🔓 Hủy bỏ Mã PIN";
+    btnTogglePin.className = "btn danger";
+    pinStatusText.innerHTML = `Trạng thái: <span style="color: #2a9d8f;">Đang bảo mật bằng mã PIN 🔒</span>`;
+  } else {
+    btnTogglePin.textContent = "🔐 Thiết lập Mã PIN";
+    btnTogglePin.className = "btn";
+    pinStatusText.innerHTML = `Trạng thái: <span style="color: var(--muted);">Chưa kích hoạt bảo mật</span>`;
+  }
+}
+ 
+btnTogglePin.addEventListener('click', () => {
+  systemSetPin = localStorage.getItem(PIN_KEY) || "";
+  if (systemSetPin) {
+    const input = prompt("Nhập mã PIN hiện tại để hủy kích hoạt bảo mật:");
+    if (input === systemSetPin) {
+      localStorage.removeItem(PIN_KEY);
+      alert("Đã tắt mã khóa bảo mật thành công!");
+      updatePinStatusUI();
+    } else if (input !== null) {
+      alert("Sai mã PIN! Không thể hủy kích hoạt.");
+    }
+  } else {
+    const pin = prompt("Nhập mã PIN mới (4 chữ số):");
+    if (pin) {
+      if (/^\d{4}$/.test(pin)) {
+        localStorage.setItem(PIN_KEY, pin);
+        alert("Thiết lập mã khóa bảo mật thành công!");
+        updatePinStatusUI();
+      } else {
+        alert("Lỗi: Mã PIN bắt buộc phải chứa đúng 4 chữ số.");
+      }
+    }
+  }
+});
+ 
+// Check if locked on window load
+function checkLockOnLoad() {
+  systemSetPin = localStorage.getItem(PIN_KEY) || "";
+  if (systemSetPin) {
+    pinLockScreen.classList.remove('hidden');
+    pinLockHeading.textContent = "Nhập mã để mở nhật ký";
+    updatePinDots();
+  }
+}
+ 
+function pressPinNum(num) {
+  if (currentEnteredPin.length < 4) {
+    currentEnteredPin += num;
+    updatePinDots();
+    
+    if (currentEnteredPin.length === 4) {
+      setTimeout(verifyPin, 150);
+    }
+  }
+}
+ 
+function clearPin() {
+  currentEnteredPin = "";
+  updatePinDots();
+}
+ 
+function deleteLastPinDigit() {
+  currentEnteredPin = currentEnteredPin.slice(0, -1);
+  updatePinDots();
+}
+ 
+function updatePinDots() {
+  const dots = document.querySelectorAll('.pin-dot');
+  dots.forEach((dot, idx) => {
+    if (idx < currentEnteredPin.length) {
+      dot.classList.add('filled');
+    } else {
+      dot.classList.remove('filled');
+    }
+  });
+}
+ 
+function verifyPin() {
+  if (currentEnteredPin === systemSetPin) {
+    pinLockScreen.classList.add('hidden');
+    currentEnteredPin = "";
+  } else {
+    // Shake effect on error
+    pinLockScreen.classList.add('shake');
+    setTimeout(() => {
+      pinLockScreen.classList.remove('shake');
+      currentEnteredPin = "";
+      updatePinDots();
+    }, 400);
+  }
+}
+ 
+/* ---------- EXPORT / IMPORT DỮ LIỆU CHUẨN HOÀN THIỆN ---------- */
+exportBtn.addEventListener('click', () => {
+  const entries = loadEntries();
+  const blob = new Blob([JSON.stringify(entries, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `nhat-ky-cap-3-backup-${todayStr()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+ 
+btnTriggerImport.addEventListener('click', () => fileImportInput.click());
+ 
+fileImportInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+ 
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    try {
+      const data = JSON.parse(evt.target.result);
+      if (Array.isArray(data)) {
+        if (confirm(`Bạn muốn nhập thêm ${data.length} trang nhật ký vào dữ liệu hiện tại chứ? Các nhật ký có sẵn vẫn được bảo lưu.`)) {
+          const currentEntries = loadEntries();
+          
+          // Tránh nạp trùng lắp các entry trùng ID
+          const existingIds = new Set(currentEntries.map(e => e.id));
+          let countImported = 0;
+          
+          data.forEach(item => {
+            if (!item.id) {
+              item.id = Date.now() + Math.random().toString(16).slice(2);
+            }
+            if (!existingIds.has(item.id)) {
+              currentEntries.push(item);
+              countImported++;
+            }
+          });
+          
+          saveEntries(currentEntries);
+          alert(`Đã nhập dữ liệu thành công ${countImported} trang nhật ký mới!`);
+          renderAll();
+        }
+      } else {
+        alert("Lỗi: Cấu trúc tệp .json không đúng định dạng sao lưu.");
+      }
+    } catch(err) {
+      alert("Không thể đọc tệp tin. Hãy đảm bảo bạn chọn đúng tệp dữ liệu đã xuất từ ứng dụng.");
+    }
+    fileImportInput.value = ""; // Clear file input selection
+  };
+  reader.readAsText(file);
+});
+ 
+/* ---------- KHÔI PHỤC CÀI ĐẶT GỐC (RESET ALL) ---------- */
+btnResetAll.addEventListener('click', () => {
+  if (confirm("🚨 Bạn thực sự muốn xóa sạch toàn bộ cuốn nhật ký? Hành động này sẽ xóa vĩnh viễn không thể lấy lại được!")) {
+    if (confirm("🚨 Xác nhận lần cuối: Bạn chắc chắn chứ?")) {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(THEME_KEY);
+      localStorage.removeItem(PIN_KEY);
+      alert("Đã làm sạch toàn bộ dữ liệu nhật ký của bạn!");
+      window.location.reload();
+    }
+  }
+});
+ 
+/* ---------- FILTER & SEARCH TRIGGERS ---------- */
+filterGrade.addEventListener('change', renderList);
+filterMood.addEventListener('change', renderList);
+filterStarred.addEventListener('change', renderList);
+searchBox.addEventListener('input', renderList);
+ 
+/* ---------- EXTRAS: LIGHTBOX FOR ATTACHMENT VIEWING ---------- */
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+ 
+function openLightbox(src) {
+  lightboxImg.src = src;
+  lightbox.style.display = 'flex';
+}
+ 
+function closeLightbox() {
+  lightbox.style.display = 'none';
+}
+ 
+// Close lightbox on Escape key
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeLightbox();
+});
+ 
+/* =========================================================
+   TẠO HIỆU ỨNG ANH ĐÀO BAY (FALLING SAKURA) TRÊN NỀN
+   Chỉ hoạt động khi sử dụng theme Sakura Dream
+   ========================================================= */
+const sCanvas = document.getElementById('sakura-canvas');
+const sCtx = sCanvas.getContext('2d');
+let sakuraArray = [];
+ 
+class SakuraPetal {
+  constructor() {
+    this.x = Math.random() * sCanvas.width;
+    this.y = Math.random() * sCanvas.height - sCanvas.height;
+    this.size = Math.random() * 8 + 6;
+    this.speed = Math.random() * 1.5 + 0.8;
+    this.angle = Math.random() * 360;
+    this.spin = Math.random() * 1.5 - 0.75;
+    this.wind = Math.random() * 0.5 + 0.2;
+  }
+  update() {
+    this.y += this.speed;
+    this.x += this.wind;
+    this.angle += this.spin;
+    if (this.y > sCanvas.height) {
+      this.y = -20;
+      this.x = Math.random() * sCanvas.width;
+    }
+  }
+  draw() {
+    sCtx.save();
+    sCtx.translate(this.x, this.y);
+    sCtx.rotate((this.angle * Math.PI) / 180);
+    sCtx.beginPath();
+    // Vẽ hình cánh hoa đào mềm mại
+    sCtx.moveTo(0, 0);
+    sCtx.bezierCurveTo(-this.size, -this.size/2, -this.size, this.size/2, 0, this.size);
+    sCtx.bezierCurveTo(this.size, this.size/2, this.size, -this.size/2, 0, 0);
+    sCtx.fillStyle = "rgba(244, 143, 177, 0.7)";
+    sCtx.fill();
+    sCtx.restore();
+  }
+}
+ 
+function handleSakura() {
+  if (document.body.classList.contains('theme-sakura')) {
+    sCtx.clearRect(0, 0, sCanvas.width, sCanvas.height);
+    for (let i = 0; i < sakuraArray.length; i++) {
+      sakuraArray[i].update();
+      sakuraArray[i].draw();
+    }
+  }
+  requestAnimationFrame(handleSakura);
+}
+ 
+function initSakura() {
+  sCanvas.width = window.innerWidth;
+  sCanvas.height = window.innerHeight;
+  sakuraArray = [];
+  for (let i = 0; i < 45; i++) {
+    sakuraArray.push(new SakuraPetal());
+  }
+}
+ 
+window.addEventListener('resize', () => {
+  if (document.body.classList.contains('theme-sakura')) {
+    sCanvas.width = window.innerWidth;
+    sCanvas.height = window.innerHeight;
+  }
+});
+ 
+/* =========================================================
+   TRẠM ÂM THANH CHILL - HOÀN TOÀN TỰ ĐỘNG BẰNG WEB AUDIO API
+   Không phụ thuộc vào bất cứ file âm thanh nào từ Internet
+   ========================================================= */
+class AmbientAudioStation {
+  constructor() {
+    this.audioCtx = null;
+    this.isInitialized = false;
+    this.gainNodes = {};
+    this.rainOsc = null;
+    this.campfireInterval = null;
+    this.lofiInterval = null;
+    
+    // Đô trưởng (C major) / La thứ (A minor) lofi chord progression
+    this.lofiNotes = [
+      [130.81, 164.81, 196.00, 246.94], // Cmaj7
+      [110.00, 146.83, 174.61, 220.00], // Fmaj7
+      [146.83, 174.61, 220.00, 293.66], // Dm7
+      [98.00, 146.83, 196.00, 246.94]   // G7
+    ];
+  }
+ 
+  init() {
+    if (this.isInitialized) return;
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    this.audioCtx = new AudioContextClass();
+ 
+    // Master node
+    this.gainNodes.master = this.audioCtx.createGain();
+    this.gainNodes.master.gain.value = 0.5;
+    this.gainNodes.master.connect(this.audioCtx.destination);
+ 
+    // Chân âm nhạc (Lofi synth)
+    this.gainNodes.music = this.audioCtx.createGain();
+    this.gainNodes.music.gain.value = 0;
+    this.gainNodes.music.connect(this.gainNodes.master);
+ 
+    // Chân tiếng mưa rơi (Noise + Lowpass Filter)
+    this.gainNodes.rain = this.audioCtx.createGain();
+    this.gainNodes.rain.gain.value = 0;
+    this.gainNodes.rain.connect(this.gainNodes.master);
+ 
+    // Chân tiếng lửa trại (Brown Noise + Crackle synthesis)
+    this.gainNodes.fire = this.audioCtx.createGain();
+    this.gainNodes.fire.gain.value = 0;
+    this.gainNodes.fire.connect(this.gainNodes.master);
+ 
+    this.setupRainSynthesis();
+    this.setupCampfireSynthesis();
+    this.setupLofiSynthesis();
+ 
+    this.isInitialized = true;
+  }
+ 
+  setupRainSynthesis() {
+    const bufferSize = 2 * this.audioCtx.sampleRate;
+    const noiseBuffer = this.audioCtx.createBuffer(1, bufferSize, this.audioCtx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = Math.random() * 2 - 1;
+    }
+ 
+    const rainSource = this.audioCtx.createBufferSource();
+    rainSource.buffer = noiseBuffer;
+    rainSource.loop = true;
+ 
+    const filter = this.audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(600, this.audioCtx.currentTime);
+ 
+    rainSource.connect(filter);
+    filter.connect(this.gainNodes.rain);
+    rainSource.start();
+  }
+ 
+  setupCampfireSynthesis() {
+    // Brown noise for crackling fire backdrop
+    const bufferSize = 2 * this.audioCtx.sampleRate;
+    const noiseBuffer = this.audioCtx.createBuffer(1, bufferSize, this.audioCtx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    let lastOut = 0.0;
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1;
+      output[i] = (lastOut + (0.02 * white)) / 1.02;
+      lastOut = output[i];
+      output[i] *= 4.0; // amplify
+    }
+ 
+    const fireSource = this.audioCtx.createBufferSource();
+    fireSource.buffer = noiseBuffer;
+    fireSource.loop = true;
+ 
+    const filter = this.audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(160, this.audioCtx.currentTime);
+ 
+    fireSource.connect(filter);
+    filter.connect(this.gainNodes.fire);
+    fireSource.start();
+ 
+    // Crackle clicks
+    this.campfireInterval = setInterval(() => {
+      if (this.gainNodes.fire.gain.value > 0 && this.audioCtx.state === 'running') {
+        if (Math.random() > 0.45) {
+          this.triggerFireCrackle();
+        }
+      }
+    }, 120);
+  }
+ 
+  triggerFireCrackle() {
+    const osc = this.audioCtx.createOscillator();
+    const gain = this.audioCtx.createGain();
+    
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(300 + Math.random() * 900, this.audioCtx.currentTime);
+    
+    gain.gain.setValueAtTime(0.008 * Math.random(), this.audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.00001, this.audioCtx.currentTime + 0.04);
+    
+    osc.connect(gain);
+    gain.connect(this.gainNodes.fire);
+    osc.start();
+    osc.stop(this.audioCtx.currentTime + 0.05);
+  }
+ 
+  setupLofiSynthesis() {
+    let chordIdx = 0;
+    this.lofiInterval = setInterval(() => {
+      if (this.gainNodes.music.gain.value > 0 && this.audioCtx.state === 'running') {
+        const chord = this.lofiNotes[chordIdx];
+        chord.forEach((freq, index) => {
+          setTimeout(() => {
+            if (this.gainNodes.music.gain.value > 0) {
+              this.playSynthKey(freq);
+            }
+          }, index * 700 + Math.random() * 150);
+        });
+        chordIdx = (chordIdx + 1) % this.lofiNotes.length;
+      }
+    }, 5500);
+  }
+ 
+  playSynthKey(freq) {
+    if (!this.audioCtx || this.audioCtx.state === 'suspended') return;
+    const osc1 = this.audioCtx.createOscillator();
+    const osc2 = this.audioCtx.createOscillator();
+    const gain = this.audioCtx.createGain();
+    const filter = this.audioCtx.createBiquadFilter();
+ 
+    osc1.type = 'triangle';
+    osc1.frequency.setValueAtTime(freq, this.audioCtx.currentTime);
+ 
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(freq * 1.004, this.audioCtx.currentTime); // Lofi Chorus
+ 
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(350, this.audioCtx.currentTime);
+    filter.frequency.exponentialRampToValueAtTime(1100, this.audioCtx.currentTime + 1.2);
+    filter.frequency.exponentialRampToValueAtTime(250, this.audioCtx.currentTime + 4.5);
+ 
+    gain.gain.setValueAtTime(0, this.audioCtx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.24, this.audioCtx.currentTime + 1.0); // Soft Attack
+    gain.gain.exponentialRampToValueAtTime(0.00001, this.audioCtx.currentTime + 5.0); // Soft Decay
+ 
+    osc1.connect(filter);
+    osc2.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.gainNodes.music);
+ 
+    osc1.start();
+    osc2.start();
+    osc1.stop(this.audioCtx.currentTime + 5.2);
+    osc2.stop(this.audioCtx.currentTime + 5.2);
+  }
+ 
+  adjustVolume(channel, value) {
+    this.init();
+    if (this.audioCtx && this.audioCtx.state === 'suspended') {
+      this.audioCtx.resume();
+    }
+    if (this.gainNodes[channel]) {
+      this.gainNodes[channel].gain.setValueAtTime(value, this.audioCtx.currentTime);
+    }
+  }
+}
+ 
+// BẬT TRẠM PHÁT ÂM THANH KHI THAY ĐỔI SLIDER
+const ambientStation = new AmbientAudioStation();
+ 
+document.getElementById('volMusic').addEventListener('input', (e) => {
+  ambientStation.adjustVolume('music', parseFloat(e.target.value));
+});
+document.getElementById('volRain').addEventListener('input', (e) => {
+  ambientStation.adjustVolume('rain', parseFloat(e.target.value));
+});
+document.getElementById('volFire').addEventListener('input', (e) => {
+  ambientStation.adjustVolume('fire', parseFloat(e.target.value));
+});
+ 
+/* ---------- TIỆN ÍCH CHUNG ---------- */
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+ 
+function formatDate(dateStr) {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+ 
+function renderAll() {
+  updateStreakWidget();
+  renderStats();
+  renderList();
+  checkOnThisDay();
+}
+ 
+/* =========================================================
+   KHỞI TẠO TOÀN CỤC TRÊN TRANG NHẬT KÝ
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  entryDate.value = todayStr();
+  loadSavedTheme();
+  updatePinStatusUI();
+  setGreetingBasedOnTime();
+  renderAll();
+  
+  // Kiểm tra mã PIN khóa màn hình nếu có thiết lập
+  checkLockOnLoad();
+  
+  // Khởi tạo Sakura
+  initSakura();
+  handleSakura();
+});
+</script>
+ 
+</body>
+</html>
+ 
+
