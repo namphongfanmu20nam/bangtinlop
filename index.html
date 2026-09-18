@@ -379,6 +379,14 @@
     position: fixed; inset: 0; background: var(--bg); z-index: 20000; display: flex;
     align-items: center; justify-content: center; padding: 20px;
   }
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .container { grid-template-columns: 1fr; padding-bottom: 20px; }
+  .sidebar { order: -1; } 
+  .chat-card { height: 75vh; }
+  .chat-bubble { max-width: 90%; }
+}
+
   .login-box {
     background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
     padding: 32px; width: 100%; max-width: 360px; box-shadow: var(--shadow); text-align: center;
@@ -521,6 +529,8 @@
         <div class="chat-empty">Đang tải tin nhắn...</div>
       </div>
       <div class="chat-input-row">
+        <button type="button" class="btn small secondary" onclick="$('#filePhotoInputChat').click()">🖼️</button>
+        <input type="file" id="filePhotoInputChat" accept="image/*" class="hidden">
         <input type="text" id="chatInput" placeholder="Nhắn gì đó cho cả lớp..." maxlength="500">
         <button id="chatSendBtn">Gửi</button>
       </div>
@@ -1061,19 +1071,58 @@ function startChatListenerOnce() {
       }
       $('#chatMessages').innerHTML = snap.docs.map(doc => {
         const m = doc.data();
-        // Bubble alignment should only depend on whether the CURRENT USER sent the message
         const isMine = m.authorId === currentUid;
-        // Delete permission includes Admin
         const canDelete = isMine || isAdmin;
         const d = m.createdAt && m.createdAt.toDate ? m.createdAt.toDate() : null;
         const timeStr = d ? d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) : '';
+        
+        let bubbleContent = '';
+        if (m.type === 'image') {
+            bubbleContent = `<img src="${m.content}" style="max-width:150px; border-radius:10px; cursor:pointer;" onclick="openLightbox('${m.content}')">`;
+        } else {
+            bubbleContent = escapeHtml(m.text || m.content);
+        }
+
         return `<div class="chat-bubble-row ${isMine ? 'mine' : 'theirs'}">
           ${!isMine ? `<div class="chat-author">${escapeHtml(m.authorName || 'Ẩn danh')}</div>` : ''}
-          <div class="chat-bubble">${escapeHtml(m.text)}</div>
+          <div class="chat-bubble">${bubbleContent}</div>
           <div class="chat-time">${timeStr}</div>
           ${canDelete ? `<button class="chat-del" data-cid="${doc.id}">Thu hồi</button>` : ''}
         </div>`;
       }).join('');
+
+// Hàm tạo HTML cho trình phát âm thanh
+function createVoicePlayerHtml(dataUrl) {
+    const audioId = 'aud_' + Math.random().toString(36).substr(2, 9);
+    return `
+    <div class="voice-player" style="display:flex; align-items:center; gap:10px; background:rgba(0,0,0,0.1); padding:8px; border-radius:10px;">
+        <button onclick="playAudio('${audioId}')" id="btn-${audioId}" style="width:30px; height:30px; border-radius:50%; border:none; cursor:pointer;">▶</button>
+        <audio id="${audioId}" src="${dataUrl}"></audio>
+        <span style="font-size:0.8rem;">Tin nhắn thoại</span>
+    </div>`;
+}
+
+// Hàm phát/dừng âm thanh
+window.playAudio = function(audioId) {
+    const audio = document.getElementById(audioId);
+    const btn = document.getElementById('btn-' + audioId);
+    console.log("Play clicked for:", audioId, "Audio element:", audio);
+    if (!audio) {
+        console.error("Audio element not found!");
+        return;
+    }
+    if (audio.paused) {
+        audio.play().then(() => {
+            btn.textContent = '⏸';
+        }).catch(e => {
+            console.error("Playback failed:", e);
+            alert("Không thể phát âm thanh: " + e.message);
+        });
+    } else {
+        audio.pause();
+        btn.textContent = '▶';
+    }
+}
       $$('#chatMessages .chat-del').forEach(btn => {
         btn.addEventListener('click', async () => {
           try { await db.collection('classChat').doc(btn.dataset.cid).delete(); }
@@ -1112,6 +1161,29 @@ async function sendChatMessage() {
 }
 $('#chatSendBtn').addEventListener('click', sendChatMessage);
 $('#chatInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') sendChatMessage(); });
+
+// --- XỬ LÝ CHAT MEDIA ---
+// 1. Gửi ảnh
+$('#filePhotoInputChat').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const dataUrl = await compressImage(file, 600); // Nén ảnh lại
+  await sendChatPayload('image', dataUrl);
+});
+
+// 2. Hàm gửi chung
+async function sendChatPayload(type, content) {
+  try {
+    const currentUid = auth.currentUser ? auth.currentUser.uid : '';
+    await db.collection('classChat').add({
+      authorName: getMyName(),
+      authorId: currentUid,
+      type: type, // 'text', 'image'
+      content: content,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch (e) { toast('Lỗi gửi media: ' + e.message); }
+}
 
 /* ---------- Lightbox ---------- */
 function closeLightbox() { $('#lightbox').style.display = 'none'; }
