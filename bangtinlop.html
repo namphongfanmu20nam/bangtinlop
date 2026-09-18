@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌸 Bảng Tin Lớp 10A5</title>
+<style>
+  /* ==========================================
+     HỆ THỐNG BIẾN TOÀN CỤC & CHỦ ĐỀ (THEMES)
+     ========================================== */
+  :root {
+    --bg: #f5efe6;
+    --paper: #fffdf9;
+    --accent: #5c84b6;
+    --accent-dark: #3f608a;
+    --accent-light: #e6f0fa;
+    --ink: #2b3a4a;
+    --muted: #7c8793;
+    --line: #e3dec3;
+    --sticker-pink: rgba(244, 143, 177, 0.4);
+    --sticker-yellow: rgba(255, 235, 156, 0.6);
+    --tape-shadow: rgba(0, 0, 0, 0.05);
+    --font-heading: "Segoe UI", Arial, sans-serif;
+    --font-body: "Segoe UI", Arial, sans-serif;
+    --shadow: 0 8px 24px rgba(43, 58, 74, 0.06);
+    --radius: 16px;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  body.theme-sakura {
+    --bg: #fdedf1; --paper: #fffcfd; --accent: #f48fb1; --accent-dark: #d81b60;
+    --accent-light: #fce4ec; --ink: #491a27; --muted: #a37b84; --line: #f8bbd0;
+    --sticker-pink: rgba(255, 182, 193, 0.5); --sticker-yellow: rgba(255, 249, 196, 0.7);
+    --shadow: 0 8px 24px rgba(216, 27, 96, 0.06);
+  }
+  body.theme-cyber {
+    --bg: #0b0c10; --paper: #1f2833; --accent: #00f0ff; --accent-dark: #ff007f;
+    --accent-light: rgba(0, 240, 255, 0.15); --ink: #c5c6c7; --muted: #66fcf1; --line: #2f3e46;
+    --sticker-pink: rgba(255, 0, 127, 0.3); --sticker-yellow: rgba(0, 240, 255, 0.3);
+    --shadow: 0 8px 24px rgba(0, 240, 255, 0.15);
+  }
+  body.theme-forest {
+    --bg: #1e2522; --paper: #2d3b36; --accent: #a3b18a; --accent-dark: #dad7cd;
+    --accent-light: rgba(163, 177, 138, 0.15); --ink: #f4f1de; --muted: #a3b18a; --line: #3f514b;
+    --sticker-pink: rgba(224, 122, 95, 0.4); --sticker-yellow: rgba(244, 241, 222, 0.3);
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+  body.theme-sunset {
+    --bg: #fef0e3; --paper: #fffaf5; --accent: #e76f51; --accent-dark: #f4a261;
+    --accent-light: #ffe5d9; --ink: #264653; --muted: #e76f51; --line: #ebd3be;
+    --sticker-pink: rgba(231, 111, 81, 0.3); --sticker-yellow: rgba(233, 196, 106, 0.5);
+    --shadow: 0 8px 24px rgba(231, 111, 81, 0.08);
+  }
+
+  * { box-sizing: border-box; outline: none; }
+  body {
+    margin: 0; font-family: var(--font-body); background: var(--bg); color: var(--ink);
+    min-height: 100vh; transition: var(--transition); overflow-x: hidden;
+  }
+
+  #sakura-canvas {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none; z-index: 999; display: none;
+  }
+  body.theme-sakura #sakura-canvas { display: block; }
+
+  header { text-align: center; padding: 40px 16px 20px; position: relative; max-width: 900px; margin: 0 auto; }
+  .tape-decoration {
+    position: absolute; top: 15px; left: 50%; transform: translateX(-50%) rotate(-2deg);
+    width: 160px; height: 38px; background: var(--sticker-yellow);
+    box-shadow: 0 2px 4px var(--tape-shadow); opacity: 0.8; z-index: 10;
+  }
+  .tape-decoration::before {
+    content: ''; position: absolute; left: -8px; top: 0; bottom: 0; width: 16px;
+    background: radial-gradient(circle, transparent 4px, var(--bg) 4px) 100% 0/16px 16px;
+  }
+  .tape-decoration::after {
+    content: ''; position: absolute; right: -8px; top: 0; bottom: 0; width: 16px;
+    background: radial-gradient(circle, transparent 4px, var(--bg) 4px) 0 0/16px 16px;
+  }
+  header h1 {
+    font-family: var(--font-heading); margin: 10px 0 0; font-size: 2.3rem; font-weight: 800;
+    letter-spacing: -0.5px; display: inline-block; position: relative;
+  }
+  header h1 span { color: var(--accent); }
+  header p { color: var(--muted); margin: 8px 0 0; font-size: 1.05rem; font-weight: 500; }
+
+  .container {
+    max-width: 1100px; margin: 0 auto; padding: 0 16px 80px;
+    display: grid; grid-template-columns: 310px 1fr; gap: 30px;
+  }
+  @media (max-width: 900px) { .container { grid-template-columns: 1fr; } }
+
+  .sidebar { display: flex; flex-direction: column; gap: 20px; }
+
+  .card {
+    background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 24px; box-shadow: var(--shadow); transition: var(--transition); position: relative;
+  }
+  .card:hover { transform: translateY(-2px); }
+
+  .sticker-note {
+    position: absolute; top: -10px; right: 15px; background: var(--sticker-pink);
+    color: var(--accent-dark); font-size: 0.75rem; font-weight: bold; padding: 4px 10px;
+    transform: rotate(5deg); border-radius: 4px; box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+  }
+
+  .widget-title {
+    font-size: 1.1rem; font-weight: 700; margin-top: 0; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px; border-bottom: 2px dashed var(--line); padding-bottom: 8px;
+  }
+
+  /* Widget: Người dùng */
+  .identity-box input {
+    width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line);
+    font-family: inherit; background: var(--paper); color: var(--ink); font-size: 0.92rem;
+  }
+  .identity-hint { font-size: 0.75rem; color: var(--muted); margin: 8px 0 0; }
+
+  /* Widget: thống kê nhanh */
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat-card { background: var(--bg); border-radius: 10px; padding: 12px; text-align: center; border: 1px solid var(--line); }
+  .stat-card .num { font-size: 1.5rem; font-weight: 800; color: var(--accent-dark); }
+  .stat-card .lbl { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+
+  /* Widget: online / thành viên gần đây */
+  .member-chip {
+    display: inline-flex; align-items: center; gap: 6px; background: var(--bg);
+    border: 1px solid var(--line); border-radius: 20px; padding: 5px 12px 5px 6px; font-size: 0.8rem;
+    margin: 3px 4px 3px 0;
+  }
+  .member-chip .dot { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; display:flex; align-items:center; justify-content:center; font-size: 0.7rem; font-weight: 800; }
+
+  /* ==========================================
+     TABS
+     ========================================== */
+  .main-content { display: flex; flex-direction: column; gap: 20px; }
+  .tabs {
+    display: flex; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 6px; gap: 6px; box-shadow: var(--shadow);
+  }
+  .tab-btn {
+    flex: 1; padding: 12px 10px; border-radius: calc(var(--radius) - 6px); border: none;
+    background: transparent; color: var(--ink); cursor: pointer; font-size: 0.95rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; gap: 6px; transition: var(--transition);
+  }
+  .tab-btn.active { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+  .tab-btn:hover:not(.active) { background: var(--accent-light); }
+
+  /* ==========================================
+     FORM ĐĂNG BÀI (TAB: BẢNG TIN)
+     ========================================== */
+  form label {
+    display: block; font-weight: 700; margin-bottom: 8px; margin-top: 16px; font-size: 0.9rem;
+    color: var(--ink); text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  form input[type="text"], form textarea {
+    width: 100%; padding: 12px 16px; border-radius: 10px; border: 1px solid var(--line);
+    font-size: 1rem; font-family: inherit; background: var(--paper); color: var(--ink);
+    transition: var(--transition); box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+  }
+  form input:focus, form textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
+  form textarea { min-height: 140px; resize: vertical; line-height: 1.8; }
+  body.theme-notebook form textarea {
+    background-image: linear-gradient(rgba(0,0,0,0) 95%, var(--line) 95%); background-size: 100% 1.8em;
+  }
+  .row { display: flex; gap: 16px; }
+  .row > div { flex: 1; }
+
+  .mood-picker-grid {
+    display: flex; gap: 8px; overflow-x: auto; padding: 6px 2px; margin-bottom: 8px; scrollbar-width: thin;
+  }
+  .mood-opt {
+    flex: 1; min-width: 55px; padding: 10px 4px; border: 1px solid var(--line); background: var(--paper);
+    border-radius: 10px; text-align: center; cursor: pointer; transition: var(--transition);
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .mood-opt .emoji { font-size: 1.5rem; transition: transform 0.2s; }
+  .mood-opt .lbl { font-size: 0.7rem; color: var(--muted); font-weight: 600; }
+  .mood-opt:hover { transform: translateY(-2px); border-color: var(--accent); background: var(--accent-light); }
+  .mood-opt:hover .emoji { transform: scale(1.2); }
+  .mood-opt.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .mood-opt.selected .lbl { color: rgba(255,255,255,0.9); }
+  .mood-opt.selected .emoji { transform: scale(1.25); }
+
+  .attachment-panel {
+    margin-top: 16px; border: 1px dashed var(--line); border-radius: 10px; padding: 14px;
+    background: rgba(255,255,255,0.1);
+  }
+  .attachment-btns { display: flex; gap: 10px; margin-bottom: 12px; }
+  .attach-btn {
+    flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--paper);
+    color: var(--ink); font-weight: bold; font-size: 0.85rem; cursor: pointer; display: flex;
+    align-items: center; justify-content: center; gap: 6px; transition: var(--transition);
+  }
+  .attach-btn:hover { border-color: var(--accent); background: var(--accent-light); }
+  .photo-uploader-box {
+    display: none; border: 2px dashed var(--accent); border-radius: 8px; padding: 20px; text-align: center;
+    cursor: pointer; background: var(--accent-light); transition: var(--transition);
+  }
+  .photo-uploader-box:hover { transform: scale(1.01); }
+  .photo-uploader-box p { margin: 4px 0 0; font-size: 0.85rem; color: var(--accent-dark); font-weight: 500; }
+
+  .media-previews { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+  .preview-item { position: relative; width: 90px; height: 90px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #fff; }
+  .preview-item img { width: 100%; height: 100%; object-fit: cover; }
+  .preview-item .remove-btn {
+    position: absolute; top: 2px; right: 2px; width: 20px; height: 20px; border-radius: 50%;
+    background: rgba(220,53,69,0.9); color: #fff; border: none; font-size: 11px; font-weight: bold;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+
+  .btn {
+    margin-top: 18px; padding: 12px 24px; background: var(--accent); color: #fff; border: none;
+    border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: var(--transition);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn:hover { background: var(--accent-dark); transform: translateY(-1px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn.secondary { background: transparent; color: var(--accent-dark); border: 1px solid var(--accent); }
+  .btn.secondary:hover { background: var(--accent-light); }
+  .btn.small { padding: 6px 14px; font-size: 0.85rem; margin-top: 0; }
+  .btn.danger { background: #e63946; }
+  .btn.danger:hover { background: #c92a3a; }
+
+  /* ==========================================
+     DANH SÁCH BÀI ĐĂNG (ENTRY / POST)
+     ========================================== */
+  .filter-bar { display: flex; gap: 12px; margin-bottom: 4px; flex-wrap: wrap; align-items: center; }
+  .status-line { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 10px; }
+
+  .entry {
+    background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow); position: relative; transition: var(--transition);
+  }
+  .entry:hover { transform: translateY(-2px); }
+  .entry-pin {
+    position: absolute; top: -12px; left: 40px; width: 26px; height: 26px; background: #e63946;
+    border-radius: 50%; opacity: 0.85; box-shadow: 1px 3px 6px rgba(0,0,0,0.2);
+    display: flex; align-items: center; justify-content: center; z-index: 5;
+  }
+  .entry-pin::after {
+    content: ''; width: 10px; height: 10px; background: rgba(255,255,255,0.4); border-radius: 50%;
+    position: absolute; top: 4px; left: 4px;
+  }
+  .entry-meta {
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--line);
+  }
+  .entry-title-area { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .entry-title { font-weight: 800; font-size: 1.25rem; color: var(--ink); }
+  .entry-grade {
+    display: inline-flex; align-items: center; gap: 5px; font-size: 0.75rem; font-weight: 700;
+    padding: 3px 10px; border-radius: 20px; background: var(--accent-light); color: var(--accent-dark);
+  }
+  .entry-date { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+  .entry-content { white-space: pre-wrap; line-height: 1.7; font-size: 1.05rem; margin-bottom: 16px; color: var(--ink); }
+  body.theme-notebook .entry-content {
+    background-image: linear-gradient(rgba(0,0,0,0) 95%, var(--line) 95%); background-size: 100% 1.7em;
+  }
+  .entry-gallery { display: flex; flex-wrap: wrap; gap: 20px; margin: 16px 0; }
+  .polaroid-frame {
+    background: #fff; border: 1px solid #e1e1e1; padding: 10px 10px 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: rotate(-1.5deg); max-width: 200px; display: inline-block; transition: var(--transition);
+  }
+  .polaroid-frame:nth-child(even) { transform: rotate(2deg); }
+  .polaroid-frame:hover { transform: scale(1.05) rotate(0deg); z-index: 10; }
+  .polaroid-img { width: 180px; height: 140px; object-fit: cover; border: 1px solid #f0f0f0; cursor: pointer; }
+
+  .entry-actions { margin-top: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .action-btns-left { display: flex; gap: 8px; flex-wrap: wrap; }
+  .entry-actions button {
+    font-size: 0.85rem; font-weight: bold; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--line);
+    background: var(--paper); color: var(--ink); cursor: pointer; transition: var(--transition);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .entry-actions button:hover { background: var(--accent-light); border-color: var(--accent); }
+  .entry-actions button.delete:hover { background: #fdf0f0; border-color: #f5c2c2; color: #dc3545; }
+  .entry-actions button.liked { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* Bình luận / nhắn tin trong bài đăng */
+  .comments-box { margin-top: 16px; border-top: 1px dashed var(--line); padding-top: 14px; }
+  .comment-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+  .comment-item { background: var(--bg); border-radius: 10px; padding: 8px 12px; font-size: 0.88rem; position: relative; }
+  .comment-author { font-weight: 700; margin-right: 6px; }
+  .comment-del { position: absolute; top: 6px; right: 8px; background: none; border: none; color: #dc3545; cursor: pointer; font-size: 0.72rem; }
+  .comment-form { display: flex; gap: 8px; }
+  .comment-form input {
+    flex: 1; padding: 9px 14px; border-radius: 20px; border: 1px solid var(--line); font-family: inherit;
+    background: var(--paper); color: var(--ink); font-size: 0.9rem;
+  }
+  .comment-form button {
+    padding: 9px 18px; border-radius: 20px; border: none; background: var(--accent); color: #fff;
+    font-weight: 700; cursor: pointer; font-size: 0.85rem;
+  }
+  .comment-form button:hover { background: var(--accent-dark); }
+
+  .empty { text-align: center; color: var(--muted); padding: 60px 0; }
+  .empty-icon { font-size: 3.5rem; margin-bottom: 12px; display: block; }
+
+  /* ==========================================
+     TAB CÀI ĐẶT
+     ========================================== */
+  .settings-grid { display: flex; flex-direction: column; gap: 20px; }
+  .settings-section { border-bottom: 1px solid var(--line); padding-bottom: 20px; }
+  .settings-section:last-child { border: none; }
+  .settings-section h3 { margin-top: 0; font-size: 1.15rem; color: var(--accent-dark); margin-bottom: 12px; }
+  .theme-selector-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+  .theme-btn {
+    padding: 12px 10px; border-radius: 10px; border: 2px solid var(--line); background: #fff; cursor: pointer;
+    font-weight: 700; font-size: 0.85rem; transition: var(--transition); text-align: center;
+  }
+  .theme-btn.active { border-color: var(--accent-dark); background: var(--accent-light); color: var(--accent-dark); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+  .setup-guide { font-size: 0.85rem; line-height: 1.7; color: var(--ink); }
+  .setup-guide code {
+    display: block; background: rgba(0,0,0,0.06); padding: 10px; border-radius: 8px; margin: 8px 0;
+    white-space: pre-wrap; word-break: break-word; font-size: 0.78rem;
+  }
+  .setup-guide.ok { color: #2e7d32; font-weight: 700; }
+  .setup-guide.warn { color: #c1502f; font-weight: 700; }
+
+  /* ==========================================
+     TAB: NHẮN TIN LỚP (LIVE CHAT)
+     ========================================== */
+  .chat-card { display: flex; flex-direction: column; height: 64vh; min-height: 420px; padding: 20px; }
+  .chat-messages {
+    flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
+    padding: 6px 4px 10px; margin-bottom: 12px; border-bottom: 1px dashed var(--line);
+  }
+  .chat-bubble-row { display: flex; flex-direction: column; max-width: 78%; }
+  .chat-bubble-row.mine { align-self: flex-end; align-items: flex-end; }
+  .chat-bubble-row.theirs { align-self: flex-start; align-items: flex-start; }
+  .chat-author { font-size: 0.72rem; font-weight: 700; color: var(--muted); margin-bottom: 3px; padding: 0 4px; }
+  .chat-bubble {
+    padding: 10px 14px; border-radius: 16px; font-size: 0.94rem; line-height: 1.5; word-break: break-word;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05); position: relative;
+  }
+  .chat-bubble-row.theirs .chat-bubble { background: var(--bg); border: 1px solid var(--line); color: var(--ink); border-bottom-left-radius: 4px; }
+  .chat-bubble-row.mine .chat-bubble { background: var(--accent); color: #fff; border-bottom-right-radius: 4px; }
+  .chat-time { font-size: 0.68rem; color: var(--muted); margin-top: 3px; padding: 0 4px; }
+  .chat-del { background: none; border: none; color: #dc3545; font-size: 0.68rem; cursor: pointer; margin-top: 2px; padding: 0 4px; }
+  .chat-input-row { display: flex; gap: 10px; }
+  .chat-input-row input {
+    flex: 1; padding: 12px 16px; border-radius: 24px; border: 1px solid var(--line); font-family: inherit;
+    background: var(--paper); color: var(--ink); font-size: 0.95rem;
+  }
+  .chat-input-row input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
+  .chat-input-row button {
+    padding: 0 22px; border-radius: 24px; border: none; background: var(--accent); color: #fff;
+    font-weight: 700; cursor: pointer; font-size: 0.95rem;
+  }
+  .chat-input-row button:hover { background: var(--accent-dark); }
+  .chat-empty { text-align: center; color: var(--muted); padding: 40px 0; font-size: 0.9rem; }
+
+  /* Fullscreen Lightbox */
+  .lightbox {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85);
+    z-index: 10010; display: none; align-items: center; justify-content: center;
+  }
+  .lightbox-img { max-width: 90%; max-height: 80%; border-radius: 6px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+  .lightbox-close { position: absolute; top: 20px; right: 20px; color: #fff; font-size: 2rem; cursor: pointer; background: transparent; border: none; }
+
+  .toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--paper);
+    padding: 10px 20px; border-radius: 20px; font-size: 0.85rem; opacity: 0; pointer-events: none;
+    transition: opacity 0.3s; z-index: 999;
+  }
+  .toast.show { opacity: 1; }
+
+  .hidden { display: none !important; }
+
+  footer {
+    text-align: center; color: var(--muted); font-size: 0.85rem; padding: 40px 16px; font-weight: 500;
+    border-top: 1px dashed var(--line); max-width: 900px; margin: 40px auto 0;
+  }
+  .login-overlay {
+    position: fixed; inset: 0; background: var(--bg); z-index: 20000; display: flex;
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .login-box {
+    background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 32px; width: 100%; max-width: 360px; box-shadow: var(--shadow); text-align: center;
+  }
+  .login-box h2 { margin: 6px 0 4px; font-size: 1.3rem; }
+  .login-box p { color: var(--muted); font-size: 0.85rem; margin: 0 0 18px; }
+  .login-box input {
+    width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line);
+    font-family: inherit; background: var(--bg); color: var(--ink); margin-bottom: 10px; font-size: 0.95rem;
+  }
+  .login-box input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
+  .login-box button {
+    width: 100%; padding: 12px; border-radius: 10px; border: none; background: var(--accent);
+    color: #fff; font-weight: 700; cursor: pointer; font-size: 0.95rem; margin-top: 4px;
+  }
+  .login-box button:hover { background: var(--accent-dark); }
+  .login-error { color: #dc3545; font-size: 0.8rem; margin-top: 10px; min-height: 16px; }
+  .logout-btn {
+    position: fixed; top: 14px; right: 14px; z-index: 500; padding: 6px 14px; border-radius: 20px;
+    border: 1px solid var(--line); background: var(--paper); color: var(--muted); font-size: 0.78rem;
+    cursor: pointer; box-shadow: var(--shadow);
+  }
+  .logout-btn:hover { background: var(--accent-light); color: var(--accent-dark); }
+</style>
+</head>
+<body class="theme-notebook">
+
+<div id="loginOverlay" class="login-overlay">
+  <div class="login-box">
+    <div style="font-size:2rem;">🔒</div>
+    <h2>Bảng Tin Lớp — Riêng Tư</h2>
+    <p>Đăng nhập bằng tài khoản của bạn để vào bảng tin</p>
+    <input type="text" id="loginUsername" placeholder="Username" autocomplete="username">
+    <input type="password" id="loginPassword" placeholder="Mật khẩu" autocomplete="current-password">
+    <button id="loginBtn">Đăng nhập</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<button class="logout-btn hidden" id="logoutBtn">🚪 Đăng xuất</button>
+
+
+<canvas id="sakura-canvas"></canvas>
+<div class="tape-decoration"></div>
+
+<header>
+  <h1>📌 Bảng Tin <span>Lớp 10A5</span></h1>
+  <p id="greetingText">Nơi cả lớp chia sẻ khoảnh khắc, thông báo và trò chuyện cùng nhau</p>
+</header>
+
+<div class="container hidden" id="mainContainer">
+
+  <!-- CỘT TRÁI: SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- WIDGET: DANH TÍNH NGƯỜI DÙNG -->
+    <div class="card identity-box">
+      <div class="sticker-note">XIN CHÀO! 👋</div>
+      <h3 class="widget-title" id="welcomeMessage">Đang tải...</h3>
+      <p class="identity-hint" id="roleMessage"></p>
+    </div>
+
+    <!-- WIDGET: THỐNG KÊ NHANH -->
+    <div class="card">
+      <h3 class="widget-title">📊 Thống Kê Bảng Tin</h3>
+      <div class="stats-grid" id="statsBar">
+        <div class="stat-card"><div class="num" id="statPosts">0</div><div class="lbl">Bài đăng</div></div>
+        <div class="stat-card"><div class="num" id="statComments">0</div><div class="lbl">Bình luận</div></div>
+        <div class="stat-card"><div class="num" id="statLikes">0</div><div class="lbl">Lượt thích</div></div>
+        <div class="stat-card"><div class="num" id="statAuthors">0</div><div class="lbl">Bạn tham gia</div></div>
+      </div>
+    </div>
+
+    <!-- WIDGET: THÀNH VIÊN GẦN ĐÂY -->
+    <div class="card">
+      <h3 class="widget-title">👥 Vừa Đăng Bài</h3>
+      <div id="recentMembers"><span class="identity-hint">Chưa có ai đăng bài.</span></div>
+    </div>
+
+  </aside>
+
+  <!-- CỘT PHẢI: NỘI DUNG CHÍNH -->
+  <main class="main-content">
+
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="feed">📝 Bảng Tin</button>
+      <button class="tab-btn" data-tab="chat">💬 Nhắn Tin Lớp</button>
+      <button class="tab-btn" data-tab="settings">⚙️ Cài Đặt</button>
+    </nav>
+
+    <!-- TAB 1: ĐĂNG BÀI + BẢNG TIN -->
+    <section id="tab-feed">
+
+      <div class="card">
+        <div class="sticker-note">ĐĂNG MỚI 📝</div>
+        <form id="postForm" onsubmit="return false;">
+          <label for="postTitle">✨ Tiêu đề (không bắt buộc)</label>
+          <input type="text" id="postTitle" placeholder="VD: Thông báo họp lớp / Ảnh dã ngoại..." maxlength="80">
+
+          <label>💖 Cảm xúc / chủ đề</label>
+          <div class="mood-picker-grid" id="moodPicker">
+            <div class="mood-opt" data-mood="📢"><span class="emoji">📢</span><span class="lbl">Thông báo</span></div>
+            <div class="mood-opt selected" data-mood="😊"><span class="emoji">😊</span><span class="lbl">Vui vẻ</span></div>
+            <div class="mood-opt" data-mood="🎉"><span class="emoji">🎉</span><span class="lbl">Hào hứng</span></div>
+            <div class="mood-opt" data-mood="📚"><span class="emoji">📚</span><span class="lbl">Học tập</span></div>
+            <div class="mood-opt" data-mood="😢"><span class="emoji">😢</span><span class="lbl">Buồn tủi</span></div>
+            <div class="mood-opt" data-mood="❤️"><span class="emoji">❤️</span><span class="lbl">Cảm động</span></div>
+            <div class="mood-opt" data-mood="⚽"><span class="emoji">⚽</span><span class="lbl">Thể thao</span></div>
+            <div class="mood-opt" data-mood="🎨"><span class="emoji">🎨</span><span class="lbl">Sáng tạo</span></div>
+          </div>
+
+          <label for="postContent">✍️ Bạn muốn chia sẻ gì với lớp?</label>
+          <textarea id="postContent" placeholder="Viết thông báo, kỷ niệm, hay điều gì đó muốn nhắn cả lớp..." required></textarea>
+
+          <div class="attachment-panel">
+            <div class="attachment-btns">
+              <button type="button" class="attach-btn" id="btnOpenUploader">📸 Chèn Hình Ảnh</button>
+            </div>
+            <div id="photoDropzone" class="photo-uploader-box">
+              <span>📷 Nhấp để tải lên hoặc kéo thả ảnh tại đây (tối đa 3 ảnh)</span>
+              <input type="file" id="filePhotoInput" accept="image/*" class="hidden" multiple>
+              <p>JPG/PNG, mỗi ảnh dưới 1.5MB</p>
+            </div>
+            <div class="media-previews" id="mediaPreviews"></div>
+          </div>
+
+          <button type="button" class="btn" id="submitPostBtn">🚀 Đăng Bài Lên Bảng Tin</button>
+        </form>
+      </div>
+
+      <div id="feedStatus" class="status-line">Đang kết nối tới bảng tin...</div>
+      <div id="entryList"></div>
+
+    </section>
+
+    <!-- TAB 2: NHẮN TIN LỚP (LIVE CHAT CHUNG CẢ LỚP) -->
+    <section id="tab-chat" class="card chat-card hidden">
+      <div class="sticker-note">CHAT CẢ LỚP 💬</div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-empty">Đang tải tin nhắn...</div>
+      </div>
+      <div class="chat-input-row">
+        <input type="text" id="chatInput" placeholder="Nhắn gì đó cho cả lớp..." maxlength="500">
+        <button id="chatSendBtn">Gửi</button>
+      </div>
+    </section>
+
+    <!-- TAB 3: CÀI ĐẶT -->
+    <section id="tab-settings" class="card hidden">
+      <div class="sticker-note">CẤU HÌNH ⚙️</div>
+      <div class="settings-grid">
+
+        <div class="settings-section">
+          <h3>🎨 Thay Đổi Giao Diện Bảng Tin</h3>
+          <p style="color: var(--muted); font-size: 0.85rem; margin-top: 0; margin-bottom: 12px;">Chọn một giao diện phù hợp với không khí của lớp mình hôm nay</p>
+          <div class="theme-selector-grid">
+            <button class="theme-btn active" data-theme="notebook">📔 Ruled Notebook</button>
+            <button class="theme-btn" data-theme="sakura">🌸 Sakura Dream</button>
+            <button class="theme-btn" data-theme="cyber">⚡ Neon Cyberpunk</button>
+            <button class="theme-btn" data-theme="forest">🌲 Cozy Forest</button>
+            <button class="theme-btn" data-theme="sunset">🌅 Golden Sunset</button>
+          </div>
+        </div>
+
+        <div class="settings-section" id="setupSection">
+          <h3>🔥 Kết Nối Firebase</h3>
+          <div class="setup-guide" id="setupGuideText">
+            <p>Bảng tin này đã được kết nối sẵn tới dự án Firebase <strong>databasesclass-3a085</strong>. Bạn chỉ cần gửi file này cho cả lớp — ai mở cũng thấy chung một bảng tin, vì dữ liệu nằm trên Firebase chứ không phải trên máy từng người.</p>
+            <p>Lưu ý: dự án Firestore cần đang ở chế độ cho phép đọc/ghi (test mode hoặc rules phù hợp) thì mọi người mới đăng bài/nhắn tin được. Nếu là <strong>lớp trưởng/quản trị dự án</strong>, vào <strong>console.firebase.google.com → dự án databasesclass-3a085 → Build → Firestore Database → Rules</strong> để kiểm tra hoặc chỉnh lại nếu cần.</p>
+            <code>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /posts/{postId} {
+      allow read, create: if true;
+      allow update, delete: if true;
+      match /comments/{commentId} {
+        allow read, create, delete: if true;
+      }
+    }
+    match /classChat/{msgId} {
+      allow read, create, delete: if true;
+    }
+  }
+}</code>
+          </div>
+          <p id="setupStatus" class="setup-guide"></p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+</div>
+
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close">&times;</button>
+  <img id="lightboxImg" class="lightbox-img" src="" alt="Full view">
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  Bảng tin lớp dùng chung một cơ sở dữ liệu Firebase (Firestore) nên mọi bài đăng, ảnh, lượt thích và bình luận đều cập nhật theo thời gian thực cho tất cả mọi người.<br>
+  Vì đây là bảng tin dùng chung công khai trong lớp nên đừng đăng thông tin quá riêng tư nhé.
+</footer>
+
+<!-- Firebase SDK (compat build) -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+
+<script>
+/* =========================================================
+   👉 DÁN CONFIG FIREBASE CỦA BẠN VÀO ĐÂY
+   ========================================================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyCNgsgNCTv-A8-FEWr45LALzADKu2U8Z2I",
+  authDomain: "databasesclass-3a085.firebaseapp.com",
+  projectId: "databasesclass-3a085",
+  storageBucket: "databasesclass-3a085.firebasestorage.app",
+  messagingSenderId: "1071453404242",
+  appId: "1:1071453404242:web:4e183e7464a39593e4f38b",
+  measurementId: "G-2FTHNBR38X"
+};
+
+let app, db, auth, firebaseReady = false;
+try {
+  app = firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  auth = firebase.auth();
+  firebaseReady = firebaseConfig.apiKey !== "YOUR_API_KEY";
+} catch (e) {
+  console.error("Firebase init lỗi:", e);
+}
+
+/* ---------- Tiện ích chung ---------- */
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+const THEME_KEY = "banglop_theme";
+const NAME_KEY = "banglop_myname";
+const DEVICE_KEY = "banglop_device_id";
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+function timeAgo(date) {
+  if (!date) return '';
+  const diffSec = Math.floor((new Date() - date) / 1000);
+  if (diffSec < 60) return 'Vừa xong';
+  const min = Math.floor(diffSec / 60);
+  if (min < 60) return `${min} phút trước`;
+  const hr = Math.floor(min / 60);
+  if (hr < 24) return `${hr} giờ trước`;
+  const day = Math.floor(hr / 24);
+  if (day < 7) return `${day} ngày trước`;
+  return date.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+function initials(name) {
+  if (!name) return '?';
+  const parts = name.trim().split(/\s+/);
+  return (parts[parts.length - 1]?.[0] || '?').toUpperCase();
+}
+function deviceId() {
+  let id = localStorage.getItem(DEVICE_KEY);
+  if (!id) {
+    id = 'dev_' + Math.random().toString(36).slice(2) + Date.now();
+    localStorage.setItem(DEVICE_KEY, id);
+  }
+  return id;
+}
+function setGreetingBasedOnTime() {
+  const hr = new Date().getHours();
+  let greet = "Nơi cả lớp chia sẻ khoảnh khắc, thông báo và trò chuyện cùng nhau 🌸";
+  if (hr >= 5 && hr < 11) greet = "🌅 Chào buổi sáng! Hôm nay lớp mình có tin gì mới không? 🌸";
+  else if (hr >= 11 && hr < 14) greet = "🍱 Giờ nghỉ trưa rồi, ghé bảng tin xem có gì hot không nào ✨";
+  else if (hr >= 14 && hr < 18) greet = "🌇 Buổi chiều rồi, có gì hay ho thì đăng lên cho cả lớp xem nhé 🥤";
+  else greet = "🌌 Buổi tối yên tĩnh, cùng đọc lại những gì cả lớp vừa chia sẻ nào ✍️";
+  $('#greetingText').textContent = greet;
+}
+
+/* ---------- Theme ---------- */
+const themeButtons = $$('.theme-btn');
+themeButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    themeButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyTheme(btn.dataset.theme);
+  });
+});
+function applyTheme(themeName) {
+  document.body.className = 'theme-' + themeName;
+  localStorage.setItem(THEME_KEY, themeName);
+}
+function loadSavedTheme() {
+  const saved = localStorage.getItem(THEME_KEY) || 'notebook';
+  const activeBtn = document.querySelector(`.theme-btn[data-theme="${saved}"]`);
+  if (activeBtn) {
+    themeButtons.forEach(b => b.classList.remove('active'));
+    activeBtn.classList.add('active');
+  }
+  applyTheme(saved);
+}
+
+/* ---------- Tabs ---------- */
+$$('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    $$('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const tab = btn.dataset.tab;
+    $('#tab-feed').classList.toggle('hidden', tab !== 'feed');
+    $('#tab-chat').classList.toggle('hidden', tab !== 'chat');
+    $('#tab-settings').classList.toggle('hidden', tab !== 'settings');
+    if (tab === 'chat') { startChatListenerOnce(); scrollChatToBottom(); }
+  });
+});
+
+/* ---------- Tên người dùng và Role từ Firestore ---------- */
+let currentUserData = null;
+
+async function fetchUserData(uid) {
+  try {
+    const userSnapshot = await db.collection('users').where('uid', '==', uid).get();
+    if (!userSnapshot.empty) {
+      currentUserData = userSnapshot.docs[0].data();
+      $('#welcomeMessage').textContent = '👋 ' + (currentUserData.full_name || 'Bạn');
+      $('#roleMessage').textContent = 'Chức vụ: ' + (currentUserData.role === 'admin' ? 'Admin' : 'Thành viên');
+    } else {
+      $('#welcomeMessage').textContent = 'Người dùng không xác định';
+    }
+  } catch (err) {
+    console.error('Lỗi lấy dữ liệu người dùng:', err);
+    $('#welcomeMessage').textContent = 'Lỗi tải hồ sơ';
+  }
+}
+
+// Hàm lấy tên dùng trong các hàm khác
+function getMyName() {
+  return currentUserData ? currentUserData.full_name : 'Ẩn danh';
+}
+
+/* ---------- Mood picker ---------- */
+let selectedMood = '😊';
+$$('#moodPicker .mood-opt').forEach(opt => {
+  opt.addEventListener('click', () => {
+    $$('#moodPicker .mood-opt').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    selectedMood = opt.dataset.mood;
+  });
+});
+
+/* ---------- Đính kèm ảnh ---------- */
+let pendingImages = [];
+$('#btnOpenUploader').addEventListener('click', () => {
+  const dz = $('#photoDropzone');
+  dz.style.display = (dz.style.display === 'block') ? 'none' : 'block';
+});
+$('#photoDropzone').addEventListener('click', (e) => {
+  if (e.target.tagName !== 'INPUT') $('#filePhotoInput').click();
+});
+$('#photoDropzone').addEventListener('dragover', (e) => { e.preventDefault(); $('#photoDropzone').style.borderColor = 'var(--accent-dark)'; });
+$('#photoDropzone').addEventListener('dragleave', () => { $('#photoDropzone').style.borderColor = 'var(--accent)'; });
+$('#photoDropzone').addEventListener('drop', (e) => {
+  e.preventDefault();
+  $('#photoDropzone').style.borderColor = 'var(--accent)';
+  handleFiles(e.dataTransfer.files);
+});
+$('#filePhotoInput').addEventListener('change', (e) => { handleFiles(e.target.files); e.target.value = ''; });
+
+async function handleFiles(fileList) {
+  const files = Array.from(fileList || []);
+  for (const file of files) {
+    if (pendingImages.length >= 3) { toast('Tối đa 3 ảnh mỗi bài nhé!'); break; }
+    if (!file.type.startsWith('image/')) continue;
+    if (file.size > 1.5 * 1024 * 1024) { toast(`Ảnh "${file.name}" quá 1.5MB, bỏ qua.`); continue; }
+    const dataUrl = await compressImage(file);
+    pendingImages.push(dataUrl);
+  }
+  renderImgPreviews();
+}
+function compressImage(file, maxW = 900) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, maxW / img.width);
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', 0.75));
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+function renderImgPreviews() {
+  const box = $('#mediaPreviews');
+  box.innerHTML = '';
+  pendingImages.forEach((src, idx) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'preview-item';
+    wrap.innerHTML = `<img src="${src}"><button type="button" class="remove-btn" data-idx="${idx}">✕</button>`;
+    wrap.querySelector('button').addEventListener('click', () => {
+      pendingImages.splice(idx, 1);
+      renderImgPreviews();
+    });
+    box.appendChild(wrap);
+  });
+}
+
+/* ---------- Đăng bài ---------- */
+$('#submitPostBtn').addEventListener('click', async () => {
+  if (!firebaseReady) {
+    toast('Bạn cần thiết lập Firebase trước (xem tab Cài Đặt) ⚙️');
+    document.querySelector('.tab-btn[data-tab="settings"]').click();
+    return;
+  }
+  const name = getMyName();
+  const content = $('#postContent').value.trim();
+  const title = $('#postTitle').value.trim();
+  if (!name || name === 'Ẩn danh') { toast('Đang tải dữ liệu hồ sơ, vui lòng đợi...'); return; }
+  if (!content) { toast('Viết nội dung bài đăng đã nhé!'); return; }
+
+  const btn = $('#submitPostBtn');
+  btn.disabled = true;
+  btn.textContent = 'Đang đăng...';
+
+  try {
+    const currentUid = auth.currentUser ? auth.currentUser.uid : '';
+    await db.collection('posts').add({
+      authorName: name,
+      authorId: currentUid,
+      title: title,
+      content: content,
+      mood: selectedMood,
+      images: pendingImages.slice(),
+      likes: [],
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    $('#postContent').value = '';
+    $('#postTitle').value = '';
+    pendingImages = [];
+    renderImgPreviews();
+    $('#photoDropzone').style.display = 'none';
+    toast('Đã đăng bài lên bảng tin lớp! 🎉');
+  } catch (err) {
+    console.error(err);
+    toast('Có lỗi khi đăng bài: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🚀 Đăng Bài Lên Bảng Tin';
+  }
+});
+
+/* ---------- Lắng nghe bảng tin realtime ---------- */
+let allCommentCounts = {}; // postId -> count, cập nhật rời rạc khi mở bình luận
+
+function startFeedListener() {
+  if (!firebaseReady) {
+    $('#feedStatus').textContent = '⚠️ Chưa thiết lập Firebase — mở tab "⚙️ Cài Đặt" để bắt đầu.';
+    $('#entryList').innerHTML = '';
+    $('#setupStatus').textContent = '⚠️ Chưa kết nối. Hãy làm theo hướng dẫn ở trên.';
+    $('#setupStatus').className = 'setup-guide warn';
+    return;
+  }
+  $('#setupStatus').textContent = '✅ Đã kết nối Firebase thành công!';
+  $('#setupStatus').className = 'setup-guide ok';
+  $('#feedStatus').textContent = 'Đang tải bảng tin...';
+
+  db.collection('posts').orderBy('createdAt', 'desc').limit(300)
+    .onSnapshot((snap) => {
+      $('#feedStatus').textContent = '';
+      if (snap.empty) {
+        $('#entryList').innerHTML = `<div class="empty card"><span class="empty-icon">🗒️</span>Chưa có bài đăng nào. Hãy là người đầu tiên chia sẻ với lớp!</div>`;
+        updateStats([]);
+        return;
+      }
+      const docs = snap.docs;
+      $('#entryList').innerHTML = docs.map(doc => renderPost(doc.id, doc.data())).join('');
+      attachPostHandlers();
+      updateStats(docs.map(d => ({ id: d.id, ...d.data() })));
+    }, (err) => {
+      console.error(err);
+      $('#feedStatus').textContent = '⚠️ Không kết nối được tới Firebase. Kiểm tra lại config & Firestore Rules.';
+      $('#setupStatus').textContent = '❌ Lỗi kết nối: ' + err.message;
+      $('#setupStatus').className = 'setup-guide warn';
+    });
+}
+
+function updateStats(posts) {
+  $('#statPosts').textContent = posts.length;
+  const totalLikes = posts.reduce((s, p) => s + ((p.likes || []).length), 0);
+  $('#statLikes').textContent = totalLikes;
+  const authors = new Set(posts.map(p => p.authorName));
+  $('#statAuthors').textContent = authors.size;
+
+  const recentBox = $('#recentMembers');
+  if (!posts.length) {
+    recentBox.innerHTML = `<span class="identity-hint">Chưa có ai đăng bài.</span>`;
+  } else {
+    const recentNames = [...new Set(posts.slice(0, 10).map(p => p.authorName))].slice(0, 8);
+    recentBox.innerHTML = recentNames.map(n =>
+      `<span class="member-chip"><span class="dot">${escapeHtml(initials(n))}</span>${escapeHtml(n)}</span>`
+    ).join('');
+  }
+
+  // Tổng bình luận: đếm bất đồng bộ qua collectionGroup
+  db.collectionGroup('comments').get().then(snap => {
+    $('#statComments').textContent = snap.size;
+  }).catch(() => { $('#statComments').textContent = '–'; });
+}
+
+function renderPost(id, data) {
+  const myName = getMyName();
+  const currentUid = auth.currentUser ? auth.currentUser.uid : '';
+  const isAdmin = currentUserData && currentUserData.role === 'admin';
+  const createdDate = data.createdAt && data.createdAt.toDate ? data.createdAt.toDate() : null;
+  const likes = data.likes || [];
+  const likedByMe = likes.includes(currentUid);
+  const isMine = data.authorId === currentUid || (myName && data.authorName === myName) || isAdmin;
+  const imagesHtml = (data.images || []).map(src =>
+    `<div class="polaroid-frame"><img src="${src}" class="polaroid-img post-img-thumb" data-full="${src}"></div>`
+  ).join('');
+
+  return `
+  <div class="entry" data-id="${id}">
+    <div class="entry-pin"></div>
+    <div class="entry-meta">
+      <div class="entry-title-area">
+        <span class="entry-title">${data.mood || ''} ${escapeHtml(data.title || 'Chia sẻ với lớp')}</span>
+        <span class="entry-grade">🙋 ${escapeHtml(data.authorName || 'Ẩn danh')}</span>
+      </div>
+      <span class="entry-date">${timeAgo(createdDate)}</span>
+    </div>
+    <div class="entry-content">${escapeHtml(data.content)}</div>
+    ${imagesHtml ? `<div class="entry-gallery">${imagesHtml}</div>` : ''}
+    <div class="entry-actions">
+      <div class="action-btns-left">
+        <button class="like-btn ${likedByMe ? 'liked' : ''}">👍 Thích${likes.length ? ` (${likes.length})` : ''}</button>
+        <button class="toggle-comments-btn">💬 Nhắn tin</button>
+      </div>
+      ${isMine ? `<button class="delete del-post-btn">🗑️ Xoá</button>` : ''}
+    </div>
+    <div class="comments-box hidden">
+      <div class="comment-list"><span class="status-line">Đang tải tin nhắn...</span></div>
+      <div class="comment-form">
+        <input type="text" class="comment-input" placeholder="Nhắn gì đó..." maxlength="300">
+        <button class="send-comment-btn">Gửi</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function attachPostHandlers() {
+  $$('.entry').forEach(postEl => {
+    const postId = postEl.dataset.id;
+
+    const delBtn = postEl.querySelector('.del-post-btn');
+    if (delBtn) {
+      delBtn.addEventListener('click', async () => {
+        if (!confirm('Xoá bài đăng này?')) return;
+        try { await db.collection('posts').doc(postId).delete(); toast('Đã xoá bài đăng.'); }
+        catch (e) { toast('Không xoá được: ' + e.message); }
+      });
+    }
+
+    postEl.querySelector('.like-btn').addEventListener('click', async () => {
+      const currentUid = auth.currentUser ? auth.currentUser.uid : '';
+      if (!currentUid) return;
+      const ref = db.collection('posts').doc(postId);
+      try {
+        await db.runTransaction(async (tx) => {
+          const snap = await tx.get(ref);
+          const likes = (snap.data().likes || []).slice();
+          const idx = likes.indexOf(currentUid);
+          if (idx >= 0) likes.splice(idx, 1); else likes.push(currentUid);
+          tx.update(ref, { likes });
+        });
+      } catch (e) { toast('Có lỗi: ' + e.message); }
+    });
+
+    const commentsBox = postEl.querySelector('.comments-box');
+    const toggleBtn = postEl.querySelector('.toggle-comments-btn');
+    let commentsLoaded = false;
+    toggleBtn.addEventListener('click', () => {
+      const showing = !commentsBox.classList.contains('hidden');
+      commentsBox.classList.toggle('hidden', showing);
+      if (!showing && !commentsLoaded) {
+        commentsLoaded = true;
+        listenComments(postId, commentsBox.querySelector('.comment-list'));
+      }
+    });
+
+    const sendComment = async () => {
+      const input = postEl.querySelector('.comment-input');
+      const text = input.value.trim();
+      if (!text) return;
+      const name = getMyName();
+      if (!name) { toast('Nhập tên của bạn ở khung bên trái trước nhé!'); return; }
+      input.value = '';
+      try {
+        const currentUid = auth.currentUser ? auth.currentUser.uid : '';
+        await db.collection('posts').doc(postId).collection('comments').add({
+          authorName: name,
+          authorId: currentUid,
+          text: text,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      } catch (e) { toast('Không gửi được tin nhắn: ' + e.message); }
+    };
+    postEl.querySelector('.send-comment-btn').addEventListener('click', sendComment);
+    postEl.querySelector('.comment-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') sendComment(); });
+
+    postEl.querySelectorAll('.post-img-thumb').forEach(img => {
+      img.addEventListener('click', () => {
+        $('#lightboxImg').src = img.dataset.full;
+        $('#lightbox').style.display = 'flex';
+      });
+    });
+  });
+}
+
+function listenComments(postId, listEl) {
+  const currentUid = auth.currentUser ? auth.currentUser.uid : '';
+  const myName = getMyName();
+  const isAdmin = currentUserData && currentUserData.role === 'admin';
+  db.collection('posts').doc(postId).collection('comments').orderBy('createdAt', 'asc')
+    .onSnapshot((snap) => {
+      if (snap.empty) {
+        listEl.innerHTML = `<span class="status-line" style="padding:4px 0;">Chưa có tin nhắn nào, hãy là người đầu tiên!</span>`;
+        return;
+      }
+      listEl.innerHTML = snap.docs.map(doc => {
+        const c = doc.data();
+        const isMine = c.authorId === currentUid || (myName && c.authorName === myName) || isAdmin;
+        return `<div class="comment-item" data-cid="${doc.id}">
+          ${isMine ? `<button class="comment-del" data-cid="${doc.id}">Xoá</button>` : ''}
+          <span class="comment-author">${escapeHtml(c.authorName)}:</span>${escapeHtml(c.text)}
+        </div>`;
+      }).join('');
+      listEl.querySelectorAll('.comment-del').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          try { await db.collection('posts').doc(postId).collection('comments').doc(btn.dataset.cid).delete(); }
+          catch (e) { toast('Không xoá được tin nhắn.'); }
+        });
+      });
+    });
+}
+
+/* ---------- Nhắn Tin Lớp (Live Chat chung) ---------- */
+let chatListenerStarted = false;
+function startChatListenerOnce() {
+  if (chatListenerStarted) return;
+  chatListenerStarted = true;
+  if (!firebaseReady) {
+    $('#chatMessages').innerHTML = `<div class="chat-empty">⚠️ Chưa thiết lập Firebase — mở tab "⚙️ Cài Đặt" để bắt đầu.</div>`;
+    return;
+  }
+  db.collection('classChat').orderBy('createdAt', 'asc').limit(500)
+    .onSnapshot((snap) => {
+      const currentUid = auth.currentUser ? auth.currentUser.uid : '';
+      const myName = getMyName();
+      const isAdmin = currentUserData && currentUserData.role === 'admin';
+      if (snap.empty) {
+        $('#chatMessages').innerHTML = `<div class="chat-empty">Chưa có tin nhắn nào — hãy là người đầu tiên chào cả lớp! 👋</div>`;
+        return;
+      }
+      $('#chatMessages').innerHTML = snap.docs.map(doc => {
+        const m = doc.data();
+        // Bubble alignment should only depend on whether the CURRENT USER sent the message
+        const isMine = m.authorId === currentUid;
+        // Delete permission includes Admin
+        const canDelete = isMine || isAdmin;
+        const d = m.createdAt && m.createdAt.toDate ? m.createdAt.toDate() : null;
+        const timeStr = d ? d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) : '';
+        return `<div class="chat-bubble-row ${isMine ? 'mine' : 'theirs'}">
+          ${!isMine ? `<div class="chat-author">${escapeHtml(m.authorName || 'Ẩn danh')}</div>` : ''}
+          <div class="chat-bubble">${escapeHtml(m.text)}</div>
+          <div class="chat-time">${timeStr}</div>
+          ${canDelete ? `<button class="chat-del" data-cid="${doc.id}">Thu hồi</button>` : ''}
+        </div>`;
+      }).join('');
+      $$('#chatMessages .chat-del').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          try { await db.collection('classChat').doc(btn.dataset.cid).delete(); }
+          catch (e) { toast('Không thu hồi được tin nhắn.'); }
+        });
+      });
+      scrollChatToBottom();
+    }, (err) => {
+      console.error(err);
+      $('#chatMessages').innerHTML = `<div class="chat-empty">⚠️ Không tải được tin nhắn: ${escapeHtml(err.message)}</div>`;
+    });
+}
+function scrollChatToBottom() {
+  const box = $('#chatMessages');
+  if (box) setTimeout(() => { box.scrollTop = box.scrollHeight; }, 50);
+}
+async function sendChatMessage() {
+  const input = $('#chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  if (!firebaseReady) { toast('Bạn cần thiết lập Firebase trước (xem tab Cài Đặt) ⚙️'); return; }
+  const name = getMyName();
+  if (!name) { toast('Nhập tên của bạn ở khung bên trái trước nhé!'); return; }
+  input.value = '';
+  try {
+    const currentUid = auth.currentUser ? auth.currentUser.uid : '';
+    await db.collection('classChat').add({
+      authorName: name,
+      authorId: currentUid,
+      text: text,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch (e) {
+    toast('Không gửi được tin nhắn: ' + e.message);
+  }
+}
+$('#chatSendBtn').addEventListener('click', sendChatMessage);
+$('#chatInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') sendChatMessage(); });
+
+/* ---------- Lightbox ---------- */
+function closeLightbox() { $('#lightbox').style.display = 'none'; }
+
+/* ---------- Hiệu ứng hoa anh đào (theme sakura) ---------- */
+const sCanvas = document.getElementById('sakura-canvas');
+const sCtx = sCanvas.getContext('2d');
+let sakuraArray = [];
+class SakuraPetal {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * window.innerWidth;
+    this.y = Math.random() * -window.innerHeight;
+    this.size = Math.random() * 8 + 6;
+    this.speed = Math.random() * 1.2 + 0.6;
+    this.wind = Math.random() * 0.6 - 0.3;
+    this.angle = Math.random() * 360;
+    this.spin = Math.random() * 2 - 1;
+  }
+  update() {
+    this.y += this.speed; this.x += this.wind; this.angle += this.spin;
+    if (this.y > sCanvas.height) { this.y = -20; this.x = Math.random() * sCanvas.width; }
+  }
+  draw() {
+    sCtx.save();
+    sCtx.translate(this.x, this.y);
+    sCtx.rotate((this.angle * Math.PI) / 180);
+    sCtx.beginPath();
+    sCtx.moveTo(0, 0);
+    sCtx.bezierCurveTo(-this.size, -this.size/2, -this.size, this.size/2, 0, this.size);
+    sCtx.bezierCurveTo(this.size, this.size/2, this.size, -this.size/2, 0, 0);
+    sCtx.fillStyle = "rgba(244, 143, 177, 0.7)";
+    sCtx.fill();
+    sCtx.restore();
+  }
+}
+function handleSakura() {
+  if (document.body.classList.contains('theme-sakura')) {
+    sCtx.clearRect(0, 0, sCanvas.width, sCanvas.height);
+    sakuraArray.forEach(p => { p.update(); p.draw(); });
+  }
+  requestAnimationFrame(handleSakura);
+}
+function initSakura() {
+  sCanvas.width = window.innerWidth;
+  sCanvas.height = window.innerHeight;
+  sakuraArray = [];
+  for (let i = 0; i < 45; i++) sakuraArray.push(new SakuraPetal());
+}
+window.addEventListener('resize', () => {
+  if (document.body.classList.contains('theme-sakura')) {
+    sCanvas.width = window.innerWidth;
+    sCanvas.height = window.innerHeight;
+  }
+});
+
+/* ---------- Khởi tạo ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+  loadSavedTheme();
+  setGreetingBasedOnTime();
+  initSakura();
+  handleSakura();
+  setupLoginGate();
+});
+
+/* ---------- Cổng đăng nhập: chỉ chủ tài khoản mới vào được ---------- */
+let appStarted = false;
+function setupLoginGate() {
+  if (!firebaseReady || !auth) {
+    $('#loginError').textContent = '⚠️ Chưa thiết lập Firebase.';
+    return;
+  }
+  auth.onAuthStateChanged(async (user) => {
+    if (user) {
+      $('#loginOverlay').style.display = 'none';
+      $('#mainContainer').classList.remove('hidden');
+      $('#logoutBtn').classList.remove('hidden');
+      
+      // Lấy dữ liệu user từ Firestore
+      await fetchUserData(user.uid);
+
+      if (!appStarted) {
+        appStarted = true;
+        startFeedListener();
+      }
+    } else {
+      $('#loginOverlay').style.display = 'flex';
+      $('#mainContainer').classList.add('hidden');
+      $('#logoutBtn').classList.add('hidden');
+      currentUserData = null;
+    }
+  });
+
+  $('#loginBtn').addEventListener('click', doLogin);
+  $('#loginPassword').addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+  $('#logoutBtn').addEventListener('click', () => auth.signOut());
+}
+
+function doLogin() {
+  const username = $('#loginUsername').value.trim();
+  const pass = $('#loginPassword').value;
+  const errEl = $('#loginError');
+  errEl.textContent = '';
+  if (!username || !pass) { errEl.textContent = 'Nhập đầy đủ username và mật khẩu nhé.'; return; }
+  
+  // Tự động map sang email
+  const email = `${username}@lop.com`;
+  
+  const btn = $('#loginBtn');
+  btn.disabled = true; btn.textContent = 'Đang đăng nhập...';
+  auth.signInWithEmailAndPassword(email, pass)
+    .catch((err) => {
+      console.error(err);
+      errEl.textContent = 'Sai tài khoản hoặc mật khẩu.';
+    })
+    .finally(() => { btn.disabled = false; btn.textContent = 'Đăng nhập'; });
+}
+</script>
+
+</body>
+</html>
