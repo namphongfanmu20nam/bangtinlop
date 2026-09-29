@@ -354,52 +354,6 @@
   .chat-input-row button:hover { background: var(--accent-dark); }
   .chat-empty { text-align: center; color: var(--muted); padding: 40px 0; font-size: 0.9rem; }
 
-  /* Bảng vẽ tay (Drawing Pad) */
-  .drawing-container {
-    display: none; background: var(--paper); border: 1px solid var(--line); border-radius: 10px;
-    padding: 12px; margin-top: 10px;
-  }
-  .drawing-canvas {
-    background: #fff; border: 1px solid var(--line); border-radius: 6px; width: 100%; height: 200px;
-    touch-action: none; cursor: crosshair; display: block;
-  }
-  .canvas-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: 10px; }
-  .colors { display: flex; gap: 4px; }
-  .color-dot {
-    width: 24px; height: 24px; border-radius: 50%; border: 2px solid #fff; cursor: pointer;
-    box-shadow: 0 0 0 1px var(--line); transition: transform 0.1s;
-  }
-  .color-dot.active { transform: scale(1.25); box-shadow: 0 0 0 2px var(--accent); }
-  .canvas-actions { display: flex; gap: 6px; }
-
-  /* Chuỗi hoạt động (Streak Widget) */
-  .streak-box { display: flex; align-items: center; gap: 16px; }
-  .streak-icon { font-size: 2.5rem; animation: fire-pulse 1.5s infinite alternate; }
-  @keyframes fire-pulse {
-    from { transform: scale(1) rotate(-3deg); filter: drop-shadow(0 0 2px orange); }
-    to { transform: scale(1.1) rotate(3deg); filter: drop-shadow(0 0 10px red); }
-  }
-  .streak-info h4 { margin: 0; font-size: 1.2rem; font-weight: 800; color: var(--accent-dark); }
-  .streak-info p { margin: 4px 0 0; font-size: 0.85rem; color: var(--muted); }
-
-  /* Âm nhạc nền (ambient) */
-  .music-controls { display: flex; flex-direction: column; gap: 12px; }
-  .music-toggle-btn {
-    display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;
-    border-radius: 10px; border: 1px solid var(--line); background: var(--paper); color: var(--ink);
-    font-weight: 700; cursor: pointer; transition: var(--transition);
-  }
-  .music-toggle-btn.playing { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .music-toggle-btn:hover { border-color: var(--accent); }
-  .sound-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-  .sound-row span { font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; color: var(--muted); }
-  .sound-slider {
-    flex: 1; height: 6px; -webkit-appearance: none; background: var(--line); border-radius: 3px; outline: none;
-  }
-  .sound-slider::-webkit-slider-thumb {
-    -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: pointer;
-  }
-
   /* Fullscreen Lightbox */
   .lightbox {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85);
@@ -425,6 +379,14 @@
     position: fixed; inset: 0; background: var(--bg); z-index: 20000; display: flex;
     align-items: center; justify-content: center; padding: 20px;
   }
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .container { grid-template-columns: 1fr; padding-bottom: 20px; }
+  .sidebar { order: -1; } 
+  .chat-card { height: 75vh; }
+  .chat-bubble { max-width: 90%; }
+}
+
   .login-box {
     background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
     padding: 32px; width: 100%; max-width: 360px; box-shadow: var(--shadow); text-align: center;
@@ -455,9 +417,9 @@
 <div id="loginOverlay" class="login-overlay">
   <div class="login-box">
     <div style="font-size:2rem;">🔒</div>
-    <h2>Bảng Tin Lớp 10A5 — Riêng Tư</h2>
+    <h2>Bảng Tin Lớp — Riêng Tư</h2>
     <p>Đăng nhập bằng tài khoản của bạn để vào bảng tin</p>
-    <input type="email" id="loginEmail" placeholder="Email" autocomplete="username">
+    <input type="text" id="loginUsername" placeholder="Username" autocomplete="username">
     <input type="password" id="loginPassword" placeholder="Mật khẩu" autocomplete="current-password">
     <button id="loginBtn">Đăng nhập</button>
     <div class="login-error" id="loginError"></div>
@@ -482,34 +444,9 @@
 
     <!-- WIDGET: DANH TÍNH NGƯỜI DÙNG -->
     <div class="card identity-box">
-      <div class="sticker-note">BẠN LÀ AI? 🙋</div>
-      <h3 class="widget-title">🙋 Tên của bạn</h3>
-      <input type="text" id="myName" placeholder="VD: Minh Anh - Tổ 2" maxlength="40">
-      <p class="identity-hint">Tên này sẽ hiện trên mọi bài đăng &amp; bình luận của bạn.</p>
-    </div>
-
-    <!-- WIDGET: CHUỖI HOẠT ĐỘNG -->
-    <div class="card">
-      <h3 class="widget-title">🔥 Chuỗi Hoạt Động</h3>
-      <div class="streak-box">
-        <div class="streak-icon">🔥</div>
-        <div class="streak-info">
-          <h4 id="streakCount">0 ngày</h4>
-          <p id="streakHint">Đăng bài mỗi ngày để giữ chuỗi lửa nhé!</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- WIDGET: ÂM NHẠC NỀN -->
-    <div class="card">
-      <h3 class="widget-title">🎵 Âm Nhạc Nền</h3>
-      <div class="music-controls">
-        <button type="button" class="music-toggle-btn" id="musicToggleBtn">▶️ Bật nhạc nền</button>
-        <div class="sound-row">
-          <span>🔊 Âm lượng</span>
-          <input type="range" class="sound-slider" id="musicVolume" min="0" max="100" value="35">
-        </div>
-      </div>
+      <div class="sticker-note">XIN CHÀO! 👋</div>
+      <h3 class="widget-title" id="welcomeMessage">Đang tải...</h3>
+      <p class="identity-hint" id="roleMessage"></p>
     </div>
 
     <!-- WIDGET: THỐNG KÊ NHANH -->
@@ -567,29 +504,11 @@
           <div class="attachment-panel">
             <div class="attachment-btns">
               <button type="button" class="attach-btn" id="btnOpenUploader">📸 Chèn Hình Ảnh</button>
-              <button type="button" class="attach-btn" id="btnOpenDrawing">✏️ Vẽ Tay</button>
             </div>
             <div id="photoDropzone" class="photo-uploader-box">
               <span>📷 Nhấp để tải lên hoặc kéo thả ảnh tại đây (tối đa 3 ảnh)</span>
               <input type="file" id="filePhotoInput" accept="image/*" class="hidden" multiple>
               <p>JPG/PNG, mỗi ảnh dưới 1.5MB</p>
-            </div>
-            <div id="drawingContainer" class="drawing-container">
-              <canvas id="drawingCanvas" class="drawing-canvas"></canvas>
-              <div class="canvas-tools">
-                <div class="colors" id="drawColors">
-                  <div class="color-dot active" data-color="#2b3a4a" style="background:#2b3a4a;"></div>
-                  <div class="color-dot" data-color="#e63946" style="background:#e63946;"></div>
-                  <div class="color-dot" data-color="#5c84b6" style="background:#5c84b6;"></div>
-                  <div class="color-dot" data-color="#2a9d8f" style="background:#2a9d8f;"></div>
-                  <div class="color-dot" data-color="#f4a261" style="background:#f4a261;"></div>
-                  <div class="color-dot" data-color="#ffffff" style="background:#ffffff;"></div>
-                </div>
-                <div class="canvas-actions">
-                  <button type="button" class="btn small secondary" id="btnClearDrawing">🗑️ Xoá</button>
-                  <button type="button" class="btn small" id="btnInsertDrawing">✅ Chèn vào bài</button>
-                </div>
-              </div>
             </div>
             <div class="media-previews" id="mediaPreviews"></div>
           </div>
@@ -610,6 +529,8 @@
         <div class="chat-empty">Đang tải tin nhắn...</div>
       </div>
       <div class="chat-input-row">
+        <button type="button" class="btn small secondary" onclick="$('#filePhotoInputChat').click()">🖼️</button>
+        <input type="file" id="filePhotoInputChat" accept="image/*" class="hidden">
         <input type="text" id="chatInput" placeholder="Nhắn gì đó cho cả lớp..." maxlength="500">
         <button id="chatSendBtn">Gửi</button>
       </div>
@@ -794,12 +715,29 @@ $$('.tab-btn').forEach(btn => {
   });
 });
 
-/* ---------- Tên người dùng ---------- */
-const myNameInput = $('#myName');
-myNameInput.value = localStorage.getItem(NAME_KEY) || '';
-myNameInput.addEventListener('change', () => {
-  localStorage.setItem(NAME_KEY, myNameInput.value.trim());
-});
+/* ---------- Tên người dùng và Role từ Firestore ---------- */
+let currentUserData = null;
+
+async function fetchUserData(uid) {
+  try {
+    const userSnapshot = await db.collection('users').where('uid', '==', uid).get();
+    if (!userSnapshot.empty) {
+      currentUserData = userSnapshot.docs[0].data();
+      $('#welcomeMessage').textContent = '👋 ' + (currentUserData.full_name || 'Bạn');
+      $('#roleMessage').textContent = 'Chức vụ: ' + (currentUserData.role === 'admin' ? 'Admin' : 'Thành viên');
+    } else {
+      $('#welcomeMessage').textContent = 'Người dùng không xác định';
+    }
+  } catch (err) {
+    console.error('Lỗi lấy dữ liệu người dùng:', err);
+    $('#welcomeMessage').textContent = 'Lỗi tải hồ sơ';
+  }
+}
+
+// Hàm lấy tên dùng trong các hàm khác
+function getMyName() {
+  return currentUserData ? currentUserData.full_name : 'Ẩn danh';
+}
 
 /* ---------- Mood picker ---------- */
 let selectedMood = '😊';
@@ -815,7 +753,6 @@ $$('#moodPicker .mood-opt').forEach(opt => {
 let pendingImages = [];
 $('#btnOpenUploader').addEventListener('click', () => {
   const dz = $('#photoDropzone');
-  $('#drawingContainer').style.display = 'none';
   dz.style.display = (dz.style.display === 'block') ? 'none' : 'block';
 });
 $('#photoDropzone').addEventListener('click', (e) => {
@@ -882,10 +819,10 @@ $('#submitPostBtn').addEventListener('click', async () => {
     document.querySelector('.tab-btn[data-tab="settings"]').click();
     return;
   }
-  const name = myNameInput.value.trim();
+  const name = getMyName();
   const content = $('#postContent').value.trim();
   const title = $('#postTitle').value.trim();
-  if (!name) { toast('Nhập tên của bạn ở khung bên trái trước đã nhé!'); myNameInput.focus(); return; }
+  if (!name || name === 'Ẩn danh') { toast('Đang tải dữ liệu hồ sơ, vui lòng đợi...'); return; }
   if (!content) { toast('Viết nội dung bài đăng đã nhé!'); return; }
 
   const btn = $('#submitPostBtn');
@@ -893,10 +830,10 @@ $('#submitPostBtn').addEventListener('click', async () => {
   btn.textContent = 'Đang đăng...';
 
   try {
-    localStorage.setItem(NAME_KEY, name);
+    const currentUid = auth.currentUser ? auth.currentUser.uid : '';
     await db.collection('posts').add({
       authorName: name,
-      authorId: deviceId(),
+      authorId: currentUid,
       title: title,
       content: content,
       mood: selectedMood,
@@ -956,7 +893,6 @@ function startFeedListener() {
 
 function updateStats(posts) {
   $('#statPosts').textContent = posts.length;
-  computeStreak(posts);
   const totalLikes = posts.reduce((s, p) => s + ((p.likes || []).length), 0);
   $('#statLikes').textContent = totalLikes;
   const authors = new Set(posts.map(p => p.authorName));
@@ -979,12 +915,13 @@ function updateStats(posts) {
 }
 
 function renderPost(id, data) {
-  const myName = (localStorage.getItem(NAME_KEY) || '').trim();
-  const dId = deviceId();
+  const myName = getMyName();
+  const currentUid = auth.currentUser ? auth.currentUser.uid : '';
+  const isAdmin = currentUserData && currentUserData.role === 'admin';
   const createdDate = data.createdAt && data.createdAt.toDate ? data.createdAt.toDate() : null;
   const likes = data.likes || [];
-  const likedByMe = likes.includes(dId);
-  const isMine = data.authorId === dId || (myName && data.authorName === myName);
+  const likedByMe = likes.includes(currentUid);
+  const isMine = data.authorId === currentUid || (myName && data.authorName === myName) || isAdmin;
   const imagesHtml = (data.images || []).map(src =>
     `<div class="polaroid-frame"><img src="${src}" class="polaroid-img post-img-thumb" data-full="${src}"></div>`
   ).join('');
@@ -1032,14 +969,15 @@ function attachPostHandlers() {
     }
 
     postEl.querySelector('.like-btn').addEventListener('click', async () => {
-      const dId = deviceId();
+      const currentUid = auth.currentUser ? auth.currentUser.uid : '';
+      if (!currentUid) return;
       const ref = db.collection('posts').doc(postId);
       try {
         await db.runTransaction(async (tx) => {
           const snap = await tx.get(ref);
           const likes = (snap.data().likes || []).slice();
-          const idx = likes.indexOf(dId);
-          if (idx >= 0) likes.splice(idx, 1); else likes.push(dId);
+          const idx = likes.indexOf(currentUid);
+          if (idx >= 0) likes.splice(idx, 1); else likes.push(currentUid);
           tx.update(ref, { likes });
         });
       } catch (e) { toast('Có lỗi: ' + e.message); }
@@ -1061,13 +999,14 @@ function attachPostHandlers() {
       const input = postEl.querySelector('.comment-input');
       const text = input.value.trim();
       if (!text) return;
-      const name = (localStorage.getItem(NAME_KEY) || '').trim();
+      const name = getMyName();
       if (!name) { toast('Nhập tên của bạn ở khung bên trái trước nhé!'); return; }
       input.value = '';
       try {
+        const currentUid = auth.currentUser ? auth.currentUser.uid : '';
         await db.collection('posts').doc(postId).collection('comments').add({
           authorName: name,
-          authorId: deviceId(),
+          authorId: currentUid,
           text: text,
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
@@ -1086,8 +1025,9 @@ function attachPostHandlers() {
 }
 
 function listenComments(postId, listEl) {
-  const dId = deviceId();
-  const myName = (localStorage.getItem(NAME_KEY) || '').trim();
+  const currentUid = auth.currentUser ? auth.currentUser.uid : '';
+  const myName = getMyName();
+  const isAdmin = currentUserData && currentUserData.role === 'admin';
   db.collection('posts').doc(postId).collection('comments').orderBy('createdAt', 'asc')
     .onSnapshot((snap) => {
       if (snap.empty) {
@@ -1096,7 +1036,7 @@ function listenComments(postId, listEl) {
       }
       listEl.innerHTML = snap.docs.map(doc => {
         const c = doc.data();
-        const isMine = c.authorId === dId || (myName && c.authorName === myName);
+        const isMine = c.authorId === currentUid || (myName && c.authorName === myName) || isAdmin;
         return `<div class="comment-item" data-cid="${doc.id}">
           ${isMine ? `<button class="comment-del" data-cid="${doc.id}">Xoá</button>` : ''}
           <span class="comment-author">${escapeHtml(c.authorName)}:</span>${escapeHtml(c.text)}
@@ -1122,24 +1062,67 @@ function startChatListenerOnce() {
   }
   db.collection('classChat').orderBy('createdAt', 'asc').limit(500)
     .onSnapshot((snap) => {
-      const dId = deviceId();
-      const myName = (localStorage.getItem(NAME_KEY) || '').trim();
+      const currentUid = auth.currentUser ? auth.currentUser.uid : '';
+      const myName = getMyName();
+      const isAdmin = currentUserData && currentUserData.role === 'admin';
       if (snap.empty) {
         $('#chatMessages').innerHTML = `<div class="chat-empty">Chưa có tin nhắn nào — hãy là người đầu tiên chào cả lớp! 👋</div>`;
         return;
       }
       $('#chatMessages').innerHTML = snap.docs.map(doc => {
         const m = doc.data();
-        const isMine = m.authorId === dId || (myName && m.authorName === myName);
+        const isMine = m.authorId === currentUid;
+        const canDelete = isMine || isAdmin;
         const d = m.createdAt && m.createdAt.toDate ? m.createdAt.toDate() : null;
         const timeStr = d ? d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) : '';
+        
+        let bubbleContent = '';
+        if (m.type === 'image') {
+            bubbleContent = `<img src="${m.content}" style="max-width:150px; border-radius:10px; cursor:pointer;" onclick="openLightbox('${m.content}')">`;
+        } else {
+            bubbleContent = escapeHtml(m.text || m.content);
+        }
+
         return `<div class="chat-bubble-row ${isMine ? 'mine' : 'theirs'}">
           ${!isMine ? `<div class="chat-author">${escapeHtml(m.authorName || 'Ẩn danh')}</div>` : ''}
-          <div class="chat-bubble">${escapeHtml(m.text)}</div>
+          <div class="chat-bubble">${bubbleContent}</div>
           <div class="chat-time">${timeStr}</div>
-          ${isMine ? `<button class="chat-del" data-cid="${doc.id}">Thu hồi</button>` : ''}
+          ${canDelete ? `<button class="chat-del" data-cid="${doc.id}">Thu hồi</button>` : ''}
         </div>`;
       }).join('');
+
+// Hàm tạo HTML cho trình phát âm thanh
+function createVoicePlayerHtml(dataUrl) {
+    const audioId = 'aud_' + Math.random().toString(36).substr(2, 9);
+    return `
+    <div class="voice-player" style="display:flex; align-items:center; gap:10px; background:rgba(0,0,0,0.1); padding:8px; border-radius:10px;">
+        <button onclick="playAudio('${audioId}')" id="btn-${audioId}" style="width:30px; height:30px; border-radius:50%; border:none; cursor:pointer;">▶</button>
+        <audio id="${audioId}" src="${dataUrl}"></audio>
+        <span style="font-size:0.8rem;">Tin nhắn thoại</span>
+    </div>`;
+}
+
+// Hàm phát/dừng âm thanh
+window.playAudio = function(audioId) {
+    const audio = document.getElementById(audioId);
+    const btn = document.getElementById('btn-' + audioId);
+    console.log("Play clicked for:", audioId, "Audio element:", audio);
+    if (!audio) {
+        console.error("Audio element not found!");
+        return;
+    }
+    if (audio.paused) {
+        audio.play().then(() => {
+            btn.textContent = '⏸';
+        }).catch(e => {
+            console.error("Playback failed:", e);
+            alert("Không thể phát âm thanh: " + e.message);
+        });
+    } else {
+        audio.pause();
+        btn.textContent = '▶';
+    }
+}
       $$('#chatMessages .chat-del').forEach(btn => {
         btn.addEventListener('click', async () => {
           try { await db.collection('classChat').doc(btn.dataset.cid).delete(); }
@@ -1161,13 +1144,14 @@ async function sendChatMessage() {
   const text = input.value.trim();
   if (!text) return;
   if (!firebaseReady) { toast('Bạn cần thiết lập Firebase trước (xem tab Cài Đặt) ⚙️'); return; }
-  const name = (localStorage.getItem(NAME_KEY) || '').trim();
+  const name = getMyName();
   if (!name) { toast('Nhập tên của bạn ở khung bên trái trước nhé!'); return; }
   input.value = '';
   try {
+    const currentUid = auth.currentUser ? auth.currentUser.uid : '';
     await db.collection('classChat').add({
       authorName: name,
-      authorId: deviceId(),
+      authorId: currentUid,
       text: text,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
@@ -1178,152 +1162,28 @@ async function sendChatMessage() {
 $('#chatSendBtn').addEventListener('click', sendChatMessage);
 $('#chatInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') sendChatMessage(); });
 
-/* ---------- Bảng vẽ tay ---------- */
-$('#btnOpenDrawing').addEventListener('click', () => {
-  $('#photoDropzone').style.display = 'none';
-  const dc = $('#drawingContainer');
-  const showing = dc.style.display === 'block';
-  dc.style.display = showing ? 'none' : 'block';
-  if (!showing) setupDrawingCanvas();
+// --- XỬ LÝ CHAT MEDIA ---
+// 1. Gửi ảnh
+$('#filePhotoInputChat').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const dataUrl = await compressImage(file, 600); // Nén ảnh lại
+  await sendChatPayload('image', dataUrl);
 });
 
-let drawCtx = null, drawing = false, drawColor = '#2b3a4a', drawCanvasReady = false;
-function setupDrawingCanvas() {
-  const canvas = $('#drawingCanvas');
-  if (!drawCanvasReady) {
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * 2;
-    canvas.height = rect.height * 2;
-    drawCtx = canvas.getContext('2d');
-    drawCtx.scale(2, 2);
-    drawCtx.fillStyle = '#ffffff';
-    drawCtx.fillRect(0, 0, canvas.width, canvas.height);
-    drawCtx.lineJoin = 'round';
-    drawCtx.lineCap = 'round';
-    drawCtx.lineWidth = 3;
-    drawCtx.strokeStyle = drawColor;
-    drawCanvasReady = true;
-
-    const getPos = (e) => {
-      const r = canvas.getBoundingClientRect();
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      return { x: clientX - r.left, y: clientY - r.top };
-    };
-    const start = (e) => { drawing = true; const p = getPos(e); drawCtx.beginPath(); drawCtx.moveTo(p.x, p.y); e.preventDefault(); };
-    const move = (e) => { if (!drawing) return; const p = getPos(e); drawCtx.lineTo(p.x, p.y); drawCtx.stroke(); e.preventDefault(); };
-    const end = () => { drawing = false; };
-
-    canvas.addEventListener('mousedown', start);
-    canvas.addEventListener('mousemove', move);
-    window.addEventListener('mouseup', end);
-    canvas.addEventListener('touchstart', start, { passive: false });
-    canvas.addEventListener('touchmove', move, { passive: false });
-    canvas.addEventListener('touchend', end);
-  }
+// 2. Hàm gửi chung
+async function sendChatPayload(type, content) {
+  try {
+    const currentUid = auth.currentUser ? auth.currentUser.uid : '';
+    await db.collection('classChat').add({
+      authorName: getMyName(),
+      authorId: currentUid,
+      type: type, // 'text', 'image'
+      content: content,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch (e) { toast('Lỗi gửi media: ' + e.message); }
 }
-$$('#drawColors .color-dot').forEach(dot => {
-  dot.addEventListener('click', () => {
-    $$('#drawColors .color-dot').forEach(d => d.classList.remove('active'));
-    dot.classList.add('active');
-    drawColor = dot.dataset.color;
-    if (drawCtx) drawCtx.strokeStyle = drawColor;
-  });
-});
-$('#btnClearDrawing').addEventListener('click', () => {
-  if (!drawCtx) return;
-  const canvas = $('#drawingCanvas');
-  drawCtx.fillStyle = '#ffffff';
-  drawCtx.fillRect(0, 0, canvas.width, canvas.height);
-});
-$('#btnInsertDrawing').addEventListener('click', () => {
-  if (!drawCtx) { toast('Hãy vẽ gì đó trước đã!'); return; }
-  if (pendingImages.length >= 3) { toast('Tối đa 3 ảnh mỗi bài nhé!'); return; }
-  const canvas = $('#drawingCanvas');
-  pendingImages.push(canvas.toDataURL('image/png'));
-  renderImgPreviews();
-  $('#drawingContainer').style.display = 'none';
-  toast('Đã chèn hình vẽ vào bài đăng! 🎨');
-});
-
-/* ---------- Chuỗi hoạt động (streak) ---------- */
-function computeStreak(posts) {
-  const myName = (localStorage.getItem(NAME_KEY) || '').trim();
-  const dId = deviceId();
-  const myDays = new Set();
-  posts.forEach(p => {
-    const isMine = p.authorId === dId || (myName && p.authorName === myName);
-    if (!isMine) return;
-    const d = p.createdAt && p.createdAt.toDate ? p.createdAt.toDate() : null;
-    if (!d) return;
-    myDays.add(d.toISOString().slice(0, 10));
-  });
-  let streak = 0;
-  let cursor = new Date();
-  // Nếu hôm nay chưa đăng, vẫn tính chuỗi từ hôm qua trở về trước
-  if (!myDays.has(cursor.toISOString().slice(0, 10))) {
-    cursor.setDate(cursor.getDate() - 1);
-  }
-  while (myDays.has(cursor.toISOString().slice(0, 10))) {
-    streak++;
-    cursor.setDate(cursor.getDate() - 1);
-  }
-  $('#streakCount').textContent = streak + ' ngày';
-  $('#streakHint').textContent = streak > 0
-    ? `Tuyệt vời! Bạn đã đăng bài ${streak} ngày liên tiếp 🔥`
-    : 'Đăng bài mỗi ngày để giữ chuỗi lửa nhé!';
-}
-
-/* ---------- Âm nhạc nền (ambient, tạo bằng Web Audio API) ---------- */
-let audioCtx = null, musicNodes = [], masterGain = null, musicPlaying = false;
-function startAmbientMusic() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  masterGain = audioCtx.createGain();
-  masterGain.gain.value = ($('#musicVolume').value / 100) * 0.18;
-  masterGain.connect(audioCtx.destination);
-
-  const chord = [261.63, 329.63, 392.00, 523.25]; // C major pad, êm dịu
-  musicNodes = chord.map((freq, i) => {
-    const osc = audioCtx.createOscillator();
-    osc.type = 'sine';
-    osc.frequency.value = freq;
-    const gain = audioCtx.createGain();
-    gain.gain.value = 0;
-    osc.connect(gain);
-    gain.connect(masterGain);
-
-    const lfo = audioCtx.createOscillator();
-    lfo.frequency.value = 0.05 + i * 0.02;
-    const lfoGain = audioCtx.createGain();
-    lfoGain.gain.value = 0.4;
-    lfo.connect(lfoGain);
-    lfoGain.connect(gain.gain);
-    gain.gain.value = 0.25;
-
-    osc.start();
-    lfo.start();
-    return { osc, gain, lfo };
-  });
-  musicPlaying = true;
-  const btn = $('#musicToggleBtn');
-  btn.textContent = '⏸️ Tắt nhạc nền';
-  btn.classList.add('playing');
-}
-function stopAmbientMusic() {
-  musicNodes.forEach(n => { try { n.osc.stop(); n.lfo.stop(); } catch (e) {} });
-  musicNodes = [];
-  musicPlaying = false;
-  const btn = $('#musicToggleBtn');
-  btn.textContent = '▶️ Bật nhạc nền';
-  btn.classList.remove('playing');
-}
-$('#musicToggleBtn').addEventListener('click', () => {
-  if (musicPlaying) stopAmbientMusic(); else startAmbientMusic();
-});
-$('#musicVolume').addEventListener('input', (e) => {
-  if (masterGain) masterGain.gain.value = (e.target.value / 100) * 0.18;
-});
 
 /* ---------- Lightbox ---------- */
 function closeLightbox() { $('#lightbox').style.display = 'none'; }
@@ -1396,11 +1256,15 @@ function setupLoginGate() {
     $('#loginError').textContent = '⚠️ Chưa thiết lập Firebase.';
     return;
   }
-  auth.onAuthStateChanged((user) => {
+  auth.onAuthStateChanged(async (user) => {
     if (user) {
       $('#loginOverlay').style.display = 'none';
       $('#mainContainer').classList.remove('hidden');
       $('#logoutBtn').classList.remove('hidden');
+      
+      // Lấy dữ liệu user từ Firestore
+      await fetchUserData(user.uid);
+
       if (!appStarted) {
         appStarted = true;
         startFeedListener();
@@ -1409,6 +1273,7 @@ function setupLoginGate() {
       $('#loginOverlay').style.display = 'flex';
       $('#mainContainer').classList.add('hidden');
       $('#logoutBtn').classList.add('hidden');
+      currentUserData = null;
     }
   });
 
@@ -1418,17 +1283,21 @@ function setupLoginGate() {
 }
 
 function doLogin() {
-  const email = $('#loginEmail').value.trim();
+  const username = $('#loginUsername').value.trim();
   const pass = $('#loginPassword').value;
   const errEl = $('#loginError');
   errEl.textContent = '';
-  if (!email || !pass) { errEl.textContent = 'Nhập đầy đủ email và mật khẩu nhé.'; return; }
+  if (!username || !pass) { errEl.textContent = 'Nhập đầy đủ username và mật khẩu nhé.'; return; }
+  
+  // Tự động map sang email
+  const email = `${username}@lop.com`;
+  
   const btn = $('#loginBtn');
   btn.disabled = true; btn.textContent = 'Đang đăng nhập...';
   auth.signInWithEmailAndPassword(email, pass)
     .catch((err) => {
       console.error(err);
-      errEl.textContent = 'Sai email hoặc mật khẩu, hoặc bạn chưa có quyền truy cập.';
+      errEl.textContent = 'Sai tài khoản hoặc mật khẩu.';
     })
     .finally(() => { btn.disabled = false; btn.textContent = 'Đăng nhập'; });
 }
