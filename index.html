@@ -409,6 +409,12 @@
   }
   .music-toggle-btn.playing { background: var(--accent); color: #fff; border-color: var(--accent); }
   .music-toggle-btn:hover { border-color: var(--accent); }
+  .sound-select {
+    width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line);
+    background: var(--paper); color: var(--ink); font-family: inherit; font-size: 0.9rem; cursor: pointer;
+  }
+  .music-file-row { display: flex; flex-direction: column; gap: 8px; }
+  .music-file-row .attach-btn { width: 100%; }
   .sound-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
   .sound-row span { font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; color: var(--muted); }
   .sound-slider {
@@ -522,7 +528,18 @@
     <div class="card">
       <h3 class="widget-title">🎵 Âm Nhạc Nền</h3>
       <div class="music-controls">
-        <button type="button" class="music-toggle-btn" id="musicToggleBtn">▶️ Bật nhạc nền</button>
+        <select id="soundModeSelect" class="sound-select">
+          <option value="ambient">🎹 Nhạc nền êm dịu</option>
+          <option value="rain">🌧️ Mưa rơi</option>
+          <option value="forest">🌲 Rừng cây & chim hót</option>
+          <option value="file">📁 Tệp nhạc MP3 của bạn</option>
+        </select>
+        <div id="musicFileRow" class="music-file-row hidden">
+          <button type="button" class="attach-btn" id="btnChooseMusicFile">📂 Chọn file MP3</button>
+          <input type="file" id="musicFileInput" accept="audio/*" class="hidden">
+          <span class="identity-hint" id="musicFileName">Chưa chọn file nào</span>
+        </div>
+        <button type="button" class="music-toggle-btn" id="musicToggleBtn">▶️ Bật âm thanh</button>
         <div class="sound-row">
           <span>🔊 Âm lượng</span>
           <input type="range" class="sound-slider" id="musicVolume" min="0" max="100" value="35">
@@ -1392,55 +1409,194 @@ function computeStreak(posts) {
     : 'Đăng bài mỗi ngày để giữ chuỗi lửa nhé!';
 }
 
-/* ---------- Âm nhạc nền (ambient, tạo bằng Web Audio API) ---------- */
-let audioCtx = null, musicNodes = [], masterGain = null, musicPlaying = false;
-function startAmbientMusic() {
+/* ---------- Âm nhạc nền: nhiều loại (ambient / mưa / rừng-chim / file mp3) ---------- */
+let audioCtx = null, masterGain = null, musicPlaying = false;
+let musicNodes = [];       // oscillator/noise nodes cho các chế độ tạo bằng Web Audio
+let birdInterval = null;   // hẹn giờ tiếng chim ngẫu nhiên
+let fileAudioEl = null;    // thẻ <audio> cho chế độ phát file mp3
+let currentSoundMode = 'ambient';
+let chosenMusicFile = null; // object URL của file mp3 đã chọn
+
+function getVolume01() { return $('#musicVolume').value / 100; }
+
+function ensureAudioCtx() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   if (audioCtx.state === 'suspended') audioCtx.resume();
-  masterGain = audioCtx.createGain();
-  masterGain.gain.value = ($('#musicVolume').value / 100) * 0.18;
-  masterGain.connect(audioCtx.destination);
+}
 
-  const chord = [261.63, 329.63, 392.00, 523.25]; // C major pad, êm dịu
+/* --- Chế độ 1: Nhạc nền êm dịu (hợp âm pad) --- */
+function startAmbientPad() {
+  masterGain = audioCtx.createGain();
+  masterGain.gain.value = getVolume01() * 0.18;
+  masterGain.connect(audioCtx.destination);
+  const chord = [261.63, 329.63, 392.00, 523.25];
   musicNodes = chord.map((freq, i) => {
     const osc = audioCtx.createOscillator();
-    osc.type = 'sine';
-    osc.frequency.value = freq;
-    const gain = audioCtx.createGain();
-    gain.gain.value = 0;
-    osc.connect(gain);
-    gain.connect(masterGain);
-
-    const lfo = audioCtx.createOscillator();
-    lfo.frequency.value = 0.05 + i * 0.02;
-    const lfoGain = audioCtx.createGain();
-    lfoGain.gain.value = 0.4;
-    lfo.connect(lfoGain);
-    lfoGain.connect(gain.gain);
-    gain.gain.value = 0.25;
-
-    osc.start();
-    lfo.start();
-    return { osc, gain, lfo };
+    osc.type = 'sine'; osc.frequency.value = freq;
+    const gain = audioCtx.createGain(); gain.gain.value = 0.25;
+    osc.connect(gain); gain.connect(masterGain);
+    const lfo = audioCtx.createOscillator(); lfo.frequency.value = 0.05 + i * 0.02;
+    const lfoGain = audioCtx.createGain(); lfoGain.gain.value = 0.4;
+    lfo.connect(lfoGain); lfoGain.connect(gain.gain);
+    osc.start(); lfo.start();
+    return { stop: () => { try { osc.stop(); lfo.stop(); } catch (e) {} } };
   });
+}
+
+/* --- Tạo tiếng ồn trắng dùng chung cho mưa & rừng --- */
+function createNoiseBuffer(seconds = 4) {
+  const len = audioCtx.sampleRate * seconds;
+  const buffer = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+  return buffer;
+}
+
+/* --- Chế độ 2: Mưa rơi (tiếng ồn lọc thấp + rung nhẹ ngẫu nhiên) --- */
+function startRainSound() {
+  masterGain = audioCtx.createGain();
+  masterGain.gain.value = getVolume01() * 0.5;
+  masterGain.connect(audioCtx.destination);
+
+  const noiseSrc = audioCtx.createBufferSource();
+  noiseSrc.buffer = createNoiseBuffer(4);
+  noiseSrc.loop = true;
+
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = 'bandpass';
+  filter.frequency.value = 1500;
+  filter.Q.value = 0.6;
+
+  const rainGain = audioCtx.createGain();
+  rainGain.gain.value = 0.9;
+
+  noiseSrc.connect(filter);
+  filter.connect(rainGain);
+  rainGain.connect(masterGain);
+
+  const lfo = audioCtx.createOscillator();
+  lfo.frequency.value = 0.15;
+  const lfoGain = audioCtx.createGain();
+  lfoGain.gain.value = 0.25;
+  lfo.connect(lfoGain);
+  lfoGain.connect(rainGain.gain);
+
+  noiseSrc.start(); lfo.start();
+  musicNodes = [{ stop: () => { try { noiseSrc.stop(); lfo.stop(); } catch (e) {} } }];
+}
+
+/* --- Chế độ 3: Rừng cây & chim hót (tiếng lá rì rào + chim hót ngẫu nhiên) --- */
+function startForestSound() {
+  masterGain = audioCtx.createGain();
+  masterGain.gain.value = getVolume01() * 0.5;
+  masterGain.connect(audioCtx.destination);
+
+  // Nền lá cây rì rào: tiếng ồn lọc cao nhẹ
+  const noiseSrc = audioCtx.createBufferSource();
+  noiseSrc.buffer = createNoiseBuffer(4);
+  noiseSrc.loop = true;
+  const leafFilter = audioCtx.createBiquadFilter();
+  leafFilter.type = 'highpass';
+  leafFilter.frequency.value = 2500;
+  const leafGain = audioCtx.createGain();
+  leafGain.gain.value = 0.18;
+  noiseSrc.connect(leafFilter);
+  leafFilter.connect(leafGain);
+  leafGain.connect(masterGain);
+  noiseSrc.start();
+
+  musicNodes = [{ stop: () => { try { noiseSrc.stop(); } catch (e) {} } }];
+
+  // Tiếng chim hót: phát ngẫu nhiên mỗi 1.5-4 giây
+  function chirpOnce() {
+    if (!masterGain) return;
+    const now = audioCtx.currentTime;
+    const baseFreq = 1800 + Math.random() * 1200;
+    const osc = audioCtx.createOscillator();
+    osc.type = 'sine';
+    const chirpGain = audioCtx.createGain();
+    chirpGain.gain.value = 0;
+    osc.connect(chirpGain);
+    chirpGain.connect(masterGain);
+
+    const chirps = 2 + Math.floor(Math.random() * 3);
+    let t = now;
+    for (let i = 0; i < chirps; i++) {
+      osc.frequency.setValueAtTime(baseFreq + Math.random() * 300, t);
+      osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.4, t + 0.06);
+      chirpGain.gain.setValueAtTime(0.0001, t);
+      chirpGain.gain.exponentialRampToValueAtTime(0.35, t + 0.02);
+      chirpGain.gain.exponentialRampToValueAtTime(0.0001, t + 0.1);
+      t += 0.13;
+    }
+    osc.start(now);
+    osc.stop(t + 0.1);
+  }
+  function scheduleChirp() {
+    chirpOnce();
+    birdInterval = setTimeout(scheduleChirp, 1500 + Math.random() * 2500);
+  }
+  scheduleChirp();
+}
+
+/* --- Chế độ 4: Phát file MP3 do người dùng tự chọn --- */
+$('#soundModeSelect').addEventListener('change', (e) => {
+  currentSoundMode = e.target.value;
+  $('#musicFileRow').classList.toggle('hidden', currentSoundMode !== 'file');
+  if (musicPlaying) { stopAmbientMusic(); startAmbientMusic(); }
+});
+$('#btnChooseMusicFile').addEventListener('click', () => $('#musicFileInput').click());
+$('#musicFileInput').addEventListener('change', (e) => {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  if (chosenMusicFile) URL.revokeObjectURL(chosenMusicFile);
+  chosenMusicFile = URL.createObjectURL(file);
+  $('#musicFileName').textContent = file.name;
+  if (musicPlaying && currentSoundMode === 'file') { stopAmbientMusic(); startAmbientMusic(); }
+});
+function startFilePlayback() {
+  if (!chosenMusicFile) { toast('Hãy chọn 1 file MP3 trước đã nhé!'); return false; }
+  fileAudioEl = new Audio(chosenMusicFile);
+  fileAudioEl.loop = true;
+  fileAudioEl.volume = Math.min(1, getVolume01());
+  fileAudioEl.play().catch(err => { console.error(err); toast('Không phát được file: ' + err.message); });
+  return true;
+}
+
+/* --- Điều phối chung: bật/tắt theo chế độ đang chọn --- */
+function startAmbientMusic() {
+  if (currentSoundMode === 'file') {
+    ensureAudioCtx();
+    if (!startFilePlayback()) return;
+  } else {
+    ensureAudioCtx();
+    if (currentSoundMode === 'ambient') startAmbientPad();
+    else if (currentSoundMode === 'rain') startRainSound();
+    else if (currentSoundMode === 'forest') startForestSound();
+  }
   musicPlaying = true;
   const btn = $('#musicToggleBtn');
-  btn.textContent = '⏸️ Tắt nhạc nền';
+  btn.textContent = '⏸️ Tắt âm thanh';
   btn.classList.add('playing');
 }
 function stopAmbientMusic() {
-  musicNodes.forEach(n => { try { n.osc.stop(); n.lfo.stop(); } catch (e) {} });
+  musicNodes.forEach(n => n.stop());
   musicNodes = [];
+  if (birdInterval) { clearTimeout(birdInterval); birdInterval = null; }
+  if (fileAudioEl) { fileAudioEl.pause(); fileAudioEl.src = ''; fileAudioEl = null; }
+  masterGain = null;
   musicPlaying = false;
   const btn = $('#musicToggleBtn');
-  btn.textContent = '▶️ Bật nhạc nền';
+  btn.textContent = '▶️ Bật âm thanh';
   btn.classList.remove('playing');
 }
 $('#musicToggleBtn').addEventListener('click', () => {
   if (musicPlaying) stopAmbientMusic(); else startAmbientMusic();
 });
 $('#musicVolume').addEventListener('input', (e) => {
-  if (masterGain) masterGain.gain.value = (e.target.value / 100) * 0.18;
+  const v = e.target.value / 100;
+  if (masterGain) masterGain.gain.value = v * (currentSoundMode === 'ambient' ? 0.18 : 0.5);
+  if (fileAudioEl) fileAudioEl.volume = Math.min(1, v);
 });
 
 /* ---------- Lightbox ---------- */
